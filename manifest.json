@@ -1,0 +1,14 @@
+{
+  "ember2d": {
+    "version": 2,
+    "file": "ember2d/index.html",
+    "sha256": "f40e3defaf171f8d7c4dff8cf9fbdddf1a567ed62073f134ca6f32216770f93e",
+    "size": 127193
+  },
+  "ember3d": {
+    "version": 2,
+    "file": "ember3d/index.html",
+    "sha256": "33af97e90e24223d70d6cbe0a89cf6b5894af48252f20a53bf7d23c2958db8e2",
+    "size": 980489
+  }
+}
