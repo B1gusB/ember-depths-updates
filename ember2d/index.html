@@ -60,6 +60,9 @@ button:active{transform:translateY(2px);box-shadow:0 2px 0 #000}
 .row{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
 .slot{width:52px;height:52px;border:3px solid #383858;background:#101020;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;flex:none}
 .slot img{width:36px;height:36px;image-rendering:pixelated}
+#tip{position:fixed;z-index:60;pointer-events:none;max-width:260px;background:#0c0c1c;border:3px solid #383858;padding:8px 10px;font-size:8px;line-height:1.6;color:#fcfcfc;box-shadow:0 4px 0 #000}
+#tip .nm{font-size:9px;margin-bottom:2px}
+#tip .pr{color:#f8b800;margin-top:4px}
 .slot.picked{outline:3px solid #fcfcfc}
 .slot .lbl{position:absolute;top:-12px;left:0;font-size:6px;color:#7c7c7c}
 .grid{display:grid;grid-template-columns:repeat(4,52px);gap:8px;justify-content:center;margin:8px 0 12px}
@@ -149,7 +152,7 @@ body.desk #touch{cursor:crosshair}
   <div style="display:flex;gap:10px;position:sticky;bottom:12px;margin-top:16px"><button id="menuBack">BACK</button><button id="startBtn" style="position:static;margin:0">START</button></div>
 </div>
 <div id="help" class="ov hide"><h1>HOW TO PLAY</h1><div class="keys">
-<b>GOAL</b><br>Dive as deep as you can. Find the stairs on each floor. Every 5th floor a boss guards them: the Ember Lord, Bone King, Brood Mother, Void Eye and, deep in the Dimhearth, the Pale Flame, each tougher than the last. Bosses always drop 3 Rare-or-better items with a big Legendary chance. Gold-crowned elites drop better loot too, and beware chests that bite.<br><br>
+<b>GOAL</b><br>Dive as deep as you can. Find the stairs on each floor. Every 5th floor a boss guards them: the Ember Lord, Bone King, Brood Mother, Void Eye and, deep in the Dimhearth, the Pale Flame, each tougher than the last. From depth 10 on, bosses grow with you: the stronger your hero, the more HP they have, so expect a real fight. Bosses always drop 3 Rare-or-better items with a big Legendary chance. Gold-crowned elites drop better loot too, and beware chests that bite.<br><br>
 <b>PHONE / TABLET</b><br>Drag anywhere on the left side to move. Hold ATK to attack the nearest foe. Tap your skill, POTION, BAG, or II to pause.<br><br>
 <b>COMPUTER</b><br>WASD or arrows: move<br>Left click (hold) or Space/J: attack toward the mouse<br>Right click, K or E: class skill<br>Q: drink potion &nbsp; I or Tab: bag &nbsp; F: auto-attack<br>Esc or P: pause, save &amp; exit<br><br>
 <b>LOOT</b><br>Grey &lt; Green &lt; Blue &lt; Purple &lt; Gold. Better gear rolls bonus perks. You can wear a weapon, helm, body armor, gloves, boots, an amulet and two rings. Your helm, gloves and boots show on your hero in their rarity color. Your class hits 25% harder with its favorite weapons.<br><br>
@@ -573,7 +576,7 @@ function genFloorX(){
   if(EN[t].pack){for(let k=0;k<EN[t].pack;k++)spawn(t,p.x+rnd(-4,4),p.y+rnd(-4,4));}else spawn(t,p.x,p.y);}});
  if(floorN>=3)for(const e of enemies)if(Math.random()<.07+floorN*.004){e.elite=true;e.hp=e.mhp=Math.round(e.mhp*2.5);e.dmg*=1.4;e.xp*=3;}
  const bd=HEARTH(floorN)?BOSSES[4]:BOSSES[(Math.floor(floorN/5)-1)%4];
- if(bossFloor){boss=spawn(bd.type,(far.cx+.5)*T,(far.cy+.5)*T);boss.room=far;boss.name=bd.name;$('bossName').textContent=bd.name;if(bossGone){enemies.pop();boss=null;map[far.cy*MW+far.cx]=2;}}
+ if(bossFloor){boss=spawn(bd.type,(far.cx+.5)*T,(far.cy+.5)*T);bossScale(boss);if(boss.type==='paleflame')boss.tpT=3;boss.room=far;boss.name=bd.name;$('bossName').textContent=bd.name;if(bossGone){enemies.pop();boss=null;map[far.cy*MW+far.cx]=2;}}
  const nc=ri(1,3);for(let i=0;i<nc;i++){const p=spotIn(rooms.slice(1));
   if(floorN>=3&&Math.random()<.22){const m=spawn('mimic',p.x,p.y);m.dormant=true;}else chests.push({x:p.x,y:p.y,open:false});}
  if(floorN%5===1||Math.random()<.4){const cand=rooms.filter(r=>r!==start&&!(bossFloor&&r===far));const p=spotIn(cand);merchant={x:p.x,y:p.y,cool:false,stock:genStock()};
@@ -586,6 +589,10 @@ function genFloorX(){
  enemies.forEach((e,i)=>e.sid=i);
  $('floorT').textContent='B'+floorN;toast(bossFloor&&!bossGone?`Depth ${floorN}: ${bd.intro}`:HEARTH(floorN)?`Depth ${floorN}: the Dimhearth`:`Depth ${floorN}`,bossFloor&&!bossGone?'#d82800':HEARTH(floorN)?'#c4d4fc':'#f8b800');
 }
+// Boss scaling (balance-bosses-2026-11-09): from B10 boss HP follows the hero's estimated DPS so fights last ~T(f) s; damage grows modestly with level. m0/d0 = unscaled values (old saves).
+function heroDps(){let b=0;for(const w of [P.weapon,...(P.inv||[]).filter(i=>i&&i.cat==='weapon')]){if(!w||!w.dmg)continue;const cr=Math.min(1,P.cls.crit+P.up.crit+(w.crit||0)+eqS('crit'));const d=w.dmg*st.atk()/10*(P.cls.aff.includes(w.type)?1.25:1)*(1+cr)*(w.multi?1.5:1)/st.acd(w);if(d>b)b=d;}return b;}
+function bossScale(e){e.m0=e.mhp;e.d0=e.dmg;if(floorN<10||!P||!P.weapon)return;const f=floorN,O=heroDps(),R=1.1*Math.pow(f,2.3),Tf=Math.min(45,20+1.6*(f-10));
+ const hp=Math.round(Tf*O*Math.min(1,Math.pow(R/Math.max(O,1),.25)));if(hp>e.mhp&&isFinite(hp))e.hp=e.mhp=hp;e.dmg*=Math.min(2.2,1+.03*Math.max(0,P.lvl-1),1+.06*(f-10));}
 function spawn(type,x,y){const b=EN[type];const m=1+(floorN-1)*.32,dm=1+(floorN-1)*.18;
  const e={type,x,y,r:b.r,hp:Math.round(b.hp*m),mhp:Math.round(b.hp*m),dmg:b.dmg*dm,spd:b.spd*rnd(.9,1.1),xp:Math.round(b.xp*(1+(floorN-1)*.25)),b,
   kx:0,ky:0,stun:0,burn:0,burnD:0,flash:0,aggro:false,shootT:rnd(.5,2),ringT:2.5,sumT:4,chT:rnd(1,3),cs:0,csT:0,spin:0,tpT:6,jit:0,ja:0,t:Math.random()*9};enemies.push(e);return e;}
@@ -605,7 +612,7 @@ function hitEnemy(e,{d,c},ang,w,o){if(e.b.ash&&P.kinT>0)d=Math.round(d*1.15);if(
  const warded=e.b.ward&&!(P.kinT>0||(!e.b.pward&&(e.burn>0||(w&&w.ashbane))));if(warded){d=Math.max(1,Math.round(d*(1-e.b.ward)));if(e.b.pward&&!wardMsg){wardMsg=1;toast('Unlit blows barely touch it. Light a hearthfire!','#c4d4fc');}}
  e.hp-=d;e.flash=.1;e.aggro=true;if(e.dormant)wakeMimic(e);const kb=(w&&w.kb?110:45)*(e.b.boss?.2:e.type==='ogre'||e.type==='ashshell'?.4:1);e.kx+=Math.cos(ang)*kb;e.ky+=Math.sin(ang)*kb;
  if(w&&w.stun&&Math.random()<w.stun)e.stun=Math.max(e.stun,.5);if(w&&w.burn){e.burn=2.5;e.burnD=Math.max(1,d*.25);}
- if(!(o&&o.pet)&&!(w&&w.pet)){const ls=(w&&w.ls||0)+eqS('ls');if(ls)P.hp=Math.min(st.maxHp(),P.hp+d*ls);}
+ if(!(o&&o.pet)&&!(w&&w.pet)){const ls=(w&&w.ls||0)+eqS('ls');if(ls)P.hp=Math.min(st.maxHp(),P.hp+d*ls*(e.m0&&e.mhp>e.m0?e.m0/e.mhp:1));}
  nums.push({x:e.x+rnd(-2,2),y:e.y-6,s:String(d)+(c?'!':''),col:warded?'#7c7c7c':c?'#f8b800':'#fcfcfc',t:.7});SFX.hit(c);
  if(e.hp<=0)killEnemy(e);}
 function killEnemy(e){const i=enemies.indexOf(e);if(i<0)return;enemies.splice(i,1);e.dead=1;P.kills++;if(P.weapon.kin&&HEARTH(floorN))kindle(4);SFX.die(e.type);
@@ -753,7 +760,7 @@ function update(dt){
     if(e.dv>0){e.dv-=dt;spd=0;if(Math.floor(e.dv*20)%2)e.flash=.03;
      if(e.dv<=0){for(const f of fires)if(f.lit&&Math.hypot(f.x-e.x,f.y-e.y)<70)snuffFire(f,4);if(Math.hypot(P.x-e.x,P.y-e.y)<70){P.kinT=0;addGloom(2);}
       SFX.devour();shake=.3;for(let k=0;k<24;k++){const a=rnd(0,7);parts.push({x:e.x,y:e.y,vx:Math.cos(a)*rnd(40,120),vy:Math.sin(a)*rnd(40,120),t:rnd(.3,.6),col:pick(['#c4d4fc','#fcfcfc'])});}}}
-    else{if(d<40)spd=0;e.ringT-=dt;if(e.ringT<=0){e.ringT=rage?1.9:2.6;SFX.eShot('pale');const off=Math.random();for(let i=0;i<12;i++)eshot(e,(i+off)/12*Math.PI*2,52,e.dmg*.7,'#c4d4fc',2,3);
+    else{if(d<40)spd=0;e.ringT-=dt;if(e.ringT<=0){e.ringT=rage?1.9:2.6;SFX.eShot('pale');const off=Math.random();for(let i=0;i<12;i++)eshot(e,(i+off)/12*Math.PI*2,52,e.dmg*.85,'#c4d4fc',2,3);
       if(rage)for(let k=-1;k<=1;k++)eshot(e,ang+k*.25,80,e.dmg*.8,'#c4d4fc',2,2.5);}
      e.tpT-=dt;if(e.tpT<=0){e.tpT=rage?6.5:9;e.dv=1;SFX.windup();fx.push({k:'ring',x:e.x,y:e.y,r:70,col:'#c4d4fc',t:1,T:1});}}
     if(rage){e.sumT-=dt;if(e.sumT<=0){e.sumT=8;if(enemies.filter(m=>m.minion&&m.type==='wickwraith').length<3){for(let k=0;k<2;k++){const m=spawn('wickwraith',e.x+rnd(-12,12),e.y+rnd(-12,12));m.minion=true;m.aggro=true;}toast('Wickwraiths flock to the Pale Flame!','#c4d4fc');SFX.summon();}}}}}
@@ -822,6 +829,27 @@ function drawMini(){const M=mOff;M.clearRect(0,0,MW,MH);const img=M.createImageD
  M.putImageData(img,0,0);if(merchant&&seen[Math.floor(merchant.y/T)*MW+Math.floor(merchant.x/T)]){M.fillStyle='#f8b800';M.fillRect(Math.floor(merchant.x/T)-1,Math.floor(merchant.y/T)-1,2,2);}for(const f of fires)if(seen[Math.floor(f.y/T)*MW+Math.floor(f.x/T)]){M.fillStyle=f.lit?'#fc7460':'#7c7c7c';M.fillRect(Math.floor(f.x/T),Math.floor(f.y/T),1,1);}M.fillStyle='#d82800';M.fillRect(Math.floor(P.x/T)-1,Math.floor(P.y/T)-1,2,2);
  mctx.clearRect(0,0,MW,MH);if(!miniRot){mctx.drawImage(mOff.canvas,0,0);return;}mctx.save();mctx.beginPath();mctx.arc(MW/2,MH/2,MW/2,0,7);mctx.clip();mctx.translate(MW/2,MH/2);mctx.rotate(miniRot);mctx.drawImage(mOff.canvas,-MW/2,-MH/2);mctx.restore();}
 
+/* ---------- hover info window (mouse only) ---------- */
+const tipEl=document.createElement('div');tipEl.id='tip';tipEl.className='hide';document.body.appendChild(tipEl);
+function tipItem(s){const inv=s.closest('#inv'),shop=s.closest('#shop'),town=s.closest('#townUI');
+ if(inv){if(s.dataset.p!=null)return P.pet&&P.pet.bag?{it:P.pet.bag[+s.dataset.p]}:null;const k=s.dataset.k;if(k==null)return null;
+  if(k.startsWith('e:'))return{it:eqItem(k.slice(2)),worn:1};return{it:P.inv[+k]};}
+ if(shop){const k=s.dataset.k,buy=shopTab==='buy';if(k==='pot')return{html:`<div class="nm" style="color:#d82800">Health Potion</div><div class="dim">Restores 50% HP. You have ${P.potions}.</div><div class="pr">${value(POTION)}G</div>`};
+  if(k==='bag'){const c=bagCost();return c?{html:`<div class="nm" style="color:#f8b800">Bigger Bag</div><div class="dim">+4 bag slots (now ${P.bag}, max 32).</div><div class="pr">${c}G</div>`}:null;}
+  const it=(buy?merchant.stock:P.inv)[+k];return it?{it,price:buy?'BUY '+value(it)+'G':'SELLS FOR '+sellPrice(it)+'G'}:null;}
+ if(town){const k=s.dataset.t;if(k==null)return null;if(String(k).startsWith('e:'))return{it:eqItem(String(k).slice(2)),worn:1};return{it:P.inv[+k]};}
+ return null;}
+function tipHide(){tipEl.classList.add('hide');tipEl._s=null;}
+document.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||!P){if(!tipEl.classList.contains('hide'))tipHide();return;}
+ const s=e.target.closest&&e.target.closest('.slot');const o=s&&tipItem(s);
+ if(!o||(!o.it&&!o.html)){tipHide();return;}
+ if(tipEl._s!==s||tipEl._it!==o.it){tipEl._s=s;tipEl._it=o.it;const it=o.it;
+  tipEl.innerHTML=o.html||`<div class="nm" style="color:${RAR[it.rar].c}">${it.name}</div><div class="dim">${RAR[it.rar].n} ${typeLabel(it)}${o.worn?' · worn':''}</div>${itemLines(it).join('<br>')}${o.worn||!(it.cat==='weapon'||it.cat==='ring'||it.cat in P.eq)?'':cmpHTML(it)}${o.price?`<div class="pr">${o.price}</div>`:''}`;
+  tipEl.style.borderColor=it?RAR[it.rar].c:'#f8b800';tipEl.classList.remove('hide');}
+ const w=tipEl.offsetWidth,h=tipEl.offsetHeight;let x=e.clientX+16,y=e.clientY+16;if(x+w>innerWidth-4)x=e.clientX-w-12;if(y+h>innerHeight-4)y=Math.max(4,innerHeight-h-4);
+ tipEl.style.left=Math.max(4,x)+'px';tipEl.style.top=y+'px';});
+document.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse')tipHide();});
+
 /* ---------- loop ---------- */
 let last=performance.now();
 function loop(now){const dt=clamp((now-last)/1000,0,.05);last=now;Music.set(musicFor());const dk=state==='stairs'||state==='shop'||state==='pause'||state==='inv';if(dk!==Music.duck){Music.duck=dk;Music.vol();}if(state==='play'){update(dt);hud();miniT-=dt;if(miniT<=0){miniT=.25;drawMini();}}if(['title','slots','classes','help'].includes(state))renderTitle(now/1000,dt);else render();requestAnimationFrame(loop);}
@@ -869,9 +897,9 @@ const Store={db:null,uid:null,q:{},
   $('saveMode').textContent='Saves synced to your account';if(state==='title')refreshTitle();if(state==='slots')buildSlots();}};
 Store.init();
 function runData(){return{cls:CLASSES.indexOf(P.cls),floorN,lvl:P.lvl,xp:P.xp,hp:P.hp,up:P.up,weapon:P.weapon,eq:P.eq,inv:P.inv,potions:P.potions,kills:P.kills,time:P.time||0,pendingLv:Math.max(0,pendingLv),bossDone:P.bossDone||[],fl:floorState(),gold:P.gold||0,bag:P.bag,bagUps:P.bagUps};}
-function floorState(){if(!map||floorN<1)return null;return{f:floorN,seed:floorSeed,ch:chests.map((c,i)=>c.open?i:-1).filter(i=>i>=0),alive:enemies.filter(e=>e.sid!=null).map(e=>[e.sid,Math.round(e.hp)]),items:items.map(g=>({x:g.x,y:g.y,item:g.item})),stock:merchant?merchant.stock:null}}
+function floorState(){if(!map||floorN<1)return null;return{f:floorN,seed:floorSeed,ch:chests.map((c,i)=>c.open?i:-1).filter(i=>i>=0),alive:enemies.filter(e=>e.sid!=null).map(e=>e.b.boss?[e.sid,Math.round(e.hp),e.mhp,+e.dmg.toFixed(2)]:[e.sid,Math.round(e.hp)]),items:items.map(g=>({x:g.x,y:g.y,item:g.item})),stock:merchant?merchant.stock:null}}
 function applyFloor(s){if(!s||s.f!==floorN||floorN<1)return;try{s.ch.forEach(i=>{if(chests[i])chests[i].open=true;});
- if(s.alive){const m=new Map(s.alive);enemies=enemies.filter(e=>m.has(e.sid));for(const e of enemies)e.hp=Math.max(1,Math.min(e.mhp,m.get(e.sid)));if(boss&&!enemies.includes(boss))boss=null;}
+ if(s.alive){const m=new Map(s.alive);enemies=enemies.filter(e=>m.has(e.sid));if(boss&&m.has(boss.sid)&&boss.m0){const a=s.alive.find(x=>x[0]===boss.sid);if(a.length>3&&a[2]>0){boss.mhp=a[2];boss.dmg=a[3];}else{boss.mhp=boss.m0;boss.dmg=boss.d0;}}for(const e of enemies)e.hp=Math.max(1,Math.min(e.mhp,m.get(e.sid)));if(boss&&!enemies.includes(boss))boss=null;}
  if(s.items)items=s.items.filter(g=>g&&g.item);if(merchant&&s.stock)merchant.stock=s.stock;
  UID=Math.max(UID,1+Math.max(0,...[...items.map(g=>g.item),...(merchant?merchant.stock:[])].map(i=>i.id||0)));}catch(e){}}
 function summary(){return{cls:CLASSES.indexOf(P.cls),lvl:P.lvl,floor:floorN,kills:P.kills,time:P.time||0,weapon:P.weapon.name,wr:P.weapon.rar,look:lookOf(P.eq)};}

@@ -1,14 +1,14 @@
 {
   "ember2d": {
-    "version": 3,
+    "version": 4,
     "file": "ember2d/index.html",
-    "sha256": "913a2438014492910621bafe298bf5349b8cf0cc60a8320551f175f653c64886",
-    "size": 127403
+    "sha256": "d2a5c2377f169e8775ff3442e344cecb7b04e04df882a782dd671fc41b937b3e",
+    "size": 131279
   },
   "ember3d": {
-    "version": 3,
+    "version": 4,
     "file": "ember3d/index.html",
-    "sha256": "355f4162c58b44039b47938ef267b2322ad4f60ae8b886792d6d8de0cf74f6b9",
-    "size": 980699
+    "sha256": "288e770d392544a7deb7ec7c88bf5eab12e4d79603998d4f337e5216141afa8d",
+    "size": 987259
   }
 }
