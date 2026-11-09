@@ -642,9 +642,10 @@ function spawn(type,x,y){const b=EN[type];const m=1+(floorN-1)*.32,dm=1+(floorN-
   kx:0,ky:0,stun:0,burn:0,burnD:0,flash:0,aggro:false,shootT:rnd(.5,2),ringT:2.5,sumT:4,chT:rnd(1,3),cs:0,csT:0,spin:0,tpT:6,jit:0,ja:0,t:Math.random()*9};enemies.push(e);return e;}
 
 /* ---------- combat ---------- */
-function nearest(range){let best=null,bd=range;for(const e of enemies){if(e.dormant)continue;const d=Math.hypot(e.x-P.x,e.y-P.y)-e.r;if(d<bd){bd=d;best=e;}}return best;}
+function losTo(e){const dx=e.x-P.x,dy=e.y-P.y,d=Math.hypot(dx,dy),s=d-e.r;for(let t=3;t<s;t+=3)if(solid(P.x+dx/d*t,P.y+dy/d*t))return false;return true;}
+function nearest(range,los){let best=null,bd=range;for(const e of enemies){if(e.dormant||(los&&!losTo(e)))continue;const d=Math.hypot(e.x-P.x,e.y-P.y)-e.r;if(d<bd){bd=d;best=e;}}return best;}
 function pdmg(w,mult=1){let d=w.dmg*(st.atk()/10)*mult*(P.cls.aff.includes(w.type)?1.25:1)*rnd(.9,1.1);const c=Math.random()<st.crit();if(c)d*=2;return{d:Math.max(1,Math.round(d)),c};}
-function tryAttack(){if(P.atkT>0)return;const w=P.weapon;const tgt=nearest(w.kind==='melee'?w.range+26:w.range);
+function tryAttack(){if(P.atkT>0)return;const w=P.weapon;const tgt=nearest(w.kind==='melee'?w.range+26:w.range,w.kind!=='melee');
  let ang=tgt?Math.atan2(tgt.y-P.y,tgt.x-P.x):Math.atan2(P.face.y,P.face.x);if(mouse.aim||(document.body.classList.contains('desk')&&(keys[' ']||keys.j))){const a=aimAng();if(a!=null)ang=a;}P.face={x:Math.cos(ang),y:Math.sin(ang)};P.flip=P.face.x<0;P.atkT=st.acd(w);
  if(w.kind==='melee'){fx.push({k:'swing',x:P.x,y:P.y,a:ang,arc:w.arc,r:w.range,t:.14,T:.14});SFX.weapon(w.type);
   for(const e of enemies.slice()){const d=Math.hypot(e.x-P.x,e.y-P.y);if(d>w.range+e.r)continue;let da=Math.abs(((Math.atan2(e.y-P.y,e.x-P.x)-ang+Math.PI*3)%(Math.PI*2))-Math.PI);
@@ -750,7 +751,7 @@ function update(dt){
   if(P.gloom>0&&P.glT>=(near?1:4)){P.gloom--;P.glT=0;}if(P.gloom<5)P.biteMsg=0;}
  VR=clamp((HF?(P.kinT>0?7.5:5.5-.5*(P.gloom||0)):7.5)+eqS('sight'),3,9.5);
  if(atkHeld||keys[' ']||keys.j)tryAttack();
- else if(auto){const w=P.weapon;if(nearest(w.kind==='melee'?w.range+4:w.range*.9))tryAttack();}
+ else if(auto){const w=P.weapon;if(nearest(w.kind==='melee'?w.range+4:w.range*.9,w.kind!=='melee'))tryAttack();}
  // reveal
  const ptx=P.x/T,pty=P.y/T;for(let j=Math.floor(pty-VR);j<=pty+VR;j++)for(let i=Math.floor(ptx-VR);i<=ptx+VR;i++){if(i<0||j<0||i>=MW||j>=MH)continue;if((i+.5-ptx)**2+(j+.5-pty)**2<VR*VR)seen[j*MW+i]=1;}
  // stairs
