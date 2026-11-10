@@ -6,6 +6,9 @@ on:
     paths: ['saltbell-android/**', '.github/workflows/saltbell-apk.yml']
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -30,3 +33,12 @@ jobs:
           name: Saltbell-apk
           path: Saltbell.apk
           compression-level: 0
+      - name: Commit the APK to the branch (so it can be downloaded directly)
+        run: |
+          mkdir -p saltbell-android/dist
+          cp Saltbell.apk saltbell-android/dist/Saltbell.apk
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add saltbell-android/dist/Saltbell.apk
+          git commit -m "Saltbell.apk built from ${GITHUB_SHA::7}" || exit 0
+          git push
