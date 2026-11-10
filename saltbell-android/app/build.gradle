@@ -10,8 +10,8 @@ android {
         applicationId 'com.bigus.saltbell'
         minSdk 24
         targetSdk 34
-        versionCode 1
-        versionName "0.1-playtest"
+        versionCode 2
+        versionName "0.2-playtest"
     }
 
     // Fixed playtest key so each new APK installs over the old one and keeps your saves.

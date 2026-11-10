@@ -109,7 +109,7 @@ body:not(.touch).portrait #bossBar{bottom:calc(70px + var(--sb))}
 /* damage numbers */
 #dmgLayer{position:fixed;inset:0;pointer-events:none;overflow:hidden}
 .dmg{position:absolute;left:0;top:0;font:800 17px system-ui,sans-serif;color:#fff;text-shadow:0 1px 0 #0f1b24,0 0 4px rgba(15,27,36,.9);will-change:transform}
-.dmg.crit{color:var(--brass);font-size:22px}.dmg.hurt{color:var(--coral)}.dmg.heal{color:#8fe39a}.dmg.small{font-size:13px;opacity:.8}
+.dmg.crit{color:var(--brass);font-size:22px}.dmg.shell{color:#a9c4d4;font-size:14px}.dmg.shell::after{content:" ▣";font-size:10px;opacity:.8}.dmg.hurt{color:var(--coral)}.dmg.heal{color:#8fe39a}.dmg.small{font-size:13px;opacity:.8}
 /* dialogue */
 #dlg{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + var(--sb));width:min(calc(100% - 24px),560px);height:36%;max-height:260px;min-height:150px;padding:30px 20px 16px;display:none;flex-direction:column;z-index:20}
 #dlg.on{display:flex}
@@ -175,6 +175,17 @@ select{background:var(--ink);color:var(--text);border:1px solid var(--line);bord
 .ver{position:absolute;right:10px;bottom:calc(6px + var(--sb));font-size:10px;opacity:.4}
 .coats{display:flex;gap:14px;justify-content:center;margin:8px 0}.coats button{width:56px;height:56px;border-radius:50%;border:3px solid transparent}.coats button.on{border-color:var(--brass)}
 .tpanel{padding:14px}.tpanel h3{margin:0 0 8px;font-weight:500;letter-spacing:.1em}
+/* win card and credits */
+#wincard{position:fixed;inset:0;z-index:26;display:grid;place-items:center;pointer-events:none;opacity:0;transition:opacity 1.6s}
+#wincard.on{opacity:1}
+#wincard h2{font-weight:300;font-size:34px;letter-spacing:.25em;text-align:center;padding:0 20px;color:#fff;text-shadow:0 2px 24px rgba(13,43,62,.9)}
+#credits{position:fixed;inset:0;z-index:27;overflow:hidden;background:linear-gradient(rgba(15,27,36,.75),rgba(15,27,36,.55) 50%,rgba(15,27,36,.75))}
+#credits .roll{position:absolute;left:0;right:0;top:100%;text-align:center;animation:roll 25s linear forwards}
+#credits .cr{margin:0 0 26px}#credits .cr b{display:block;font-size:18px;letter-spacing:.12em;color:var(--brass);font-weight:600}#credits .cr span{display:block;font-size:14px;opacity:.85;font-style:italic}
+#credits .cr:first-child b{font-size:34px;font-weight:300;letter-spacing:.3em;color:#fff}
+#credits #skipCr{position:absolute;right:calc(16px + var(--sr));bottom:calc(16px + var(--sb));min-width:96px}
+@keyframes roll{to{transform:translateY(calc(-100% - 100vh))}}
+body.winning #hud{display:none}
 /* death / fade / loading */
 #death{position:fixed;inset:0;z-index:28;background:rgba(13,43,62,.0);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;animation:dfade 1.2s forwards}
 #death p{font-size:20px;font-style:italic;text-align:center;padding:0 20px}
@@ -185,6 +196,41 @@ select{background:var(--ink);color:var(--text);border:1px solid var(--line);bord
 #loading h1{font-weight:300;letter-spacing:.3em;margin:0}
 .lbar{width:200px;height:4px;border-radius:2px;background:rgba(255,255,255,.1);overflow:hidden}.lbar i{display:block;height:100%;width:10%;background:var(--brass);transition:width .2s}
 #loading p{opacity:.6;font-size:13px}
+/* ---------- short landscape (phone held sideways): body.land = wider than tall and under 520 px high ---------- */
+.land #hudTL{top:calc(10px + var(--st))}
+.land #tonicBtn{top:calc(78px + var(--st))}
+.land #hudTR{top:calc(10px + var(--st));display:grid;grid-template-columns:auto auto;gap:6px 8px;align-items:start;justify-items:end}
+.land #menuBtn{grid-column:1;grid-row:1}
+.land #mmRow{grid-column:2;grid-row:1}
+.land #mmWrap,.land #minimap{width:84px;height:84px}.land #tideGauge{height:84px}
+.land #tracker{grid-column:1/3;max-width:230px}
+.land #tracker b,.land #tracker span{font-size:12px}
+.land #bossBar{top:calc(12px + var(--st));width:max(240px,calc(100% - 540px))}
+.land #toasts{top:calc(70px + var(--st));width:min(56%,420px)}
+.land #banner{top:24%}.land #banner h2{font-size:22px}
+.land #joyzone{height:75%;width:45%}
+.land #joy{top:calc(100% - 104px - var(--sb))}
+/* right-hand cluster: an arc that stays under the minimap and quest text */
+.land #bAttack{--x:68px!important;--y:72px!important;--s:84px!important}
+.land #bDodge{--x:164px!important;--y:44px!important;--s:60px!important}
+.land #bPeal{--x:172px!important;--y:122px!important;--s:54px!important}
+.land #bUnder{--x:120px!important;--y:172px!important;--s:54px!important}
+.land #bWard{--x:56px!important;--y:166px!important;--s:54px!important}
+.land #bBell{--x:250px!important;--y:96px!important;--s:62px!important}
+.land #bInteract{--x:250px!important;--y:176px!important;--s:60px!important}
+.land #dlg{height:auto;min-height:118px;max-height:62vh;bottom:calc(8px + var(--sb));padding:24px 18px 12px}
+.land #dlg .text{font-size:16px}
+.land #dlg .choices{flex-direction:row;flex-wrap:wrap}.land #dlg .choices button{width:auto;flex:1 1 40%}
+.land #menu{padding-top:calc(6px + var(--st))}
+.land .tabs button{min-height:44px}
+.land .mbody{margin-top:6px}
+.land #mapWrap{max-height:none;height:calc(100vh - 140px);width:auto;aspect-ratio:1;margin:0 auto}
+.land #sheet{max-height:88%}
+.land #title{flex-direction:row;justify-content:space-around;align-items:center;padding:calc(12px + var(--st)) calc(20px + var(--sr)) calc(12px + var(--sb)) calc(20px + var(--sl))}
+.land #title h1{font-size:32px}
+.land .tmenu{max-height:100%;overflow:auto;touch-action:pan-y;width:min(46%,380px)}
+.land .tpanel .coats button{width:46px;height:46px}
+.land #wincard h2{font-size:28px}
 </style>
 </head>
 <body>
@@ -267,7 +313,7 @@ const t="170",e={LEFT:0,MIDDLE:1,RIGHT:2,ROTATE:0,DOLLY:1,PAN:2},n={ROTATE:0,PAN
    code elsewhere reads it. Add zones / enemies / quests / items by
    extending these tables.
    ===================================================================== */
-const VERSION = 'M2.0';
+const VERSION = '1.0';
 const PAL = {
   deep: 0x0d2b3e, teal: 0x1f6f78, foam: 0x8fe3cf, wetSand: 0xc9b78f, drySand: 0xefe6d2,
   moss: 0x6f8f4e, drift: 0x8a6e55, slate: 0x5b6770, brass: 0xd9b45a, coral: 0xff7a5c,
@@ -318,9 +364,9 @@ const ZONES = [
   { id: 'gullstair', name: 'Gullstair Cliffs', sub: 'Wind, gulls, and a long way down', x: -62, z: -62, r: 32, tier: 1, weather: { fog: 1, wind: 2, leaves: 1 }, music: 'gullstair' },
   { id: 'mirewood', name: 'Mirewood', sub: 'It has been raining here since before the flood', x: 64, z: -28, r: 34, tier: 2, weather: { fog: 1.8, sun: .6, wind: 1, rain: 1 }, music: 'mirewood' },
   { id: 'coral', name: 'Coral Steps', sub: 'The reef remembers the sun', x: -46, z: 44, r: 26, tier: 2, weather: { fog: .8, wind: 1 }, music: 'coral' },
+  { id: 'spire', name: 'Bell Spire', sub: 'Where the sea keeps time', x: -6, z: 108, r: 17, tier: 3, weather: { fog: 1, wind: 1.8 }, music: 'spire' },
+  { id: 'causeway', name: "Saint's Causeway", sub: 'The road the sea lends back', x: 14, z: 92, r: 10, tier: 3, weather: { fog: 1.2, wind: 1.5 }, music: 'spire' },
   { id: 'abbey', name: 'Drowned Abbey', sub: 'The hours stopped here', x: 25, z: 68, r: 28, tier: 3, weather: { fog: 1.6, wind: .6, tint: 1 }, music: 'abbey' },
-  { id: 'spire', name: 'Bell Spire', sub: 'Where the sea keeps time', x: -6, z: 108, r: 16, tier: 3, weather: { fog: 1, wind: 1.5 }, music: 'abbey' },
-  { id: 'causeway', name: "Saint's Causeway", sub: 'The road the sea lends back', x: 14, z: 92, r: 10, tier: 3, weather: { fog: 1.2, wind: 1.5 }, music: 'abbey' },
   { id: 'reach', name: 'Sunken Reach', sub: 'Nine years under. Not for long.', x: 0, z: -10, r: 44, tier: 1, weather: { fog: 1, wind: 1 }, music: 'reach' },
 ];
 const TIER_MULT = { 1: { hp: 1, dmg: 1, xp: 1 }, 2: { hp: 1.7, dmg: 1.4, xp: 1.6 }, 3: { hp: 2.6, dmg: 1.9, xp: 2.4 } };
@@ -339,8 +385,10 @@ const POSTS = [
   { id: 'P2a', x: 25, z: -2.5 }, { id: 'P2b', x: 28.4, z: 4.2 },
   { id: 'P3', x: 12, z: 9.6, land: [12, 13] },
   { id: 'P4', x: 78, z: -40 },
-  { id: 'P5', x: -34, z: 63 },
+  { id: 'P5a', x: -38, z: 55 }, { id: 'P5b', x: -34, z: 62.6, land: [-34.3, 64] },
 ];
+// grapple links used by the reachability report (from post -> to post landing)
+const POST_LINKS = [['P1a', 'P1b'], ['P1b', 'P1a'], ['P2a', 'P2b'], ['P2b', 'P2a'], ['P3', 'P3'], ['P4', 'P4'], ['P5a', 'P5b'], ['P5b', 'P5a']];
 
 /* ---------- enemies (design 6). attacks are data; brains in actors.js ---------- */
 // shape: circle {r, off} | cone {r, ang} | line {len, w} ; move: dash during active
@@ -392,10 +440,11 @@ const GROUPS = [
   { id: 'G19', x: -48, z: 46, r: 8, tide: 'low', n: [['mudskip', 3], ['skitter', 2]] },
   { id: 'G20', x: -36, z: 58, r: 6, tide: 'low', n: [['knight', 1, 1], ['skitter', 2]] },
   { id: 'G21', x: -44, z: 40, r: 10, tide: 'high', n: [['jelly', 4], ['lamprey', 2]] },
-  { id: 'G22', x: 14, z: 66, r: 6, tide: 'low', n: [['acolyte', 3]] },
-  { id: 'G23', x: 36, z: 60, r: 6, tide: 'low', n: [['acolyte', 2], ['knight', 1]] },
-  { id: 'G24', x: 20, z: 84, r: 8, tide: 'high', n: [['lamprey', 3], ['jelly', 2]] },
-  { id: 'G25', x: 40, z: 78, r: 6, tide: 'low', n: [['acolyte', 3], ['acolyte', 1, 1]] },
+  { id: 'G22', x: 14, z: 66, r: 6, tide: 'low', n: [['acolyte', 3]], statue: 1 },
+  { id: 'G23', x: 36, z: 60, r: 6, tide: 'low', n: [['acolyte', 2], ['knight', 1]], statue: 1 },
+  { id: 'G24', x: 13, z: 84, r: 6, tide: 'high', n: [['lamprey', 3], ['jelly', 2]] },
+  { id: 'G25', x: 41, z: 76, r: 5, tide: 'low', n: [['acolyte', 3], ['acolyte', 1, 1]], statue: 1 },
+  { id: 'GQ4', x: 28, z: 63, r: 3, tide: 'any', n: [['acolyte', 3]], quest: 4, awake: 1 },
   { id: 'G26', x: 12, z: 94, r: 4, tide: 'low', n: [['knight', 2]] },
   { id: 'G27', x: 16, z: 92, r: 5, tide: 'high', n: [['lamprey', 3]] },
 ];
@@ -453,8 +502,9 @@ const CHESTS = [
   { id: 'C13', x: -58, z: 26, tide: 'low', item: 'plate' },
   { id: 'C14', x: -34, z: 64.5, tide: 'low', item: 'lance' },
   { id: 'C15', x: -50, z: 48, tide: 'low', glass: 80, pearl: 1 },
-  { id: 'C16', x: 36, z: 64, tide: 'low', item: 'cassock' },
+  { id: 'C16', x: 38.6, z: 63, tide: 'low', item: 'cassock' },
   { id: 'C17', x: 10, z: 76, tide: 'low', glass: 100, pearl: 1 },
+  { id: 'C18', x: -14, z: 112, tide: 'any', item: 'pearlLW', after: 'B3' },
   { id: 'C19', x: 12, z: 94, tide: 'low', glass: 150, brass: 5 },
 ];
 const CHIMES = [
@@ -502,6 +552,16 @@ const IDLE = {
   ansel: ['Boats are very patient. People aren\'t.', 'Mind the pools. Some of them bite.'],
   calder: ['The hours are heavy down here.', 'I row in circles. It passes the time, which is more than the abbey does.'],
 };
+// post-game lines (after the Great Bell rings)
+const POST = {
+  hesper: ['Hear that? It got the pitch right this time. Took two of us.', 'I keep waiting for the sea to complain. It just breathes.'],
+  pell: ['Every boat in Brackwick is floating at the same time. I may cry.', 'The forge is still open. Bells break. People drop things.'],
+  wick: ['Low tide sale. High tide sale. Business is very tidal now.', 'Boots, sold out. Hope is a good customer after all.'],
+  tibb: ['Mum let me go down to the flats! For ten minutes!', 'The little chimes ring when the sea turns now. I told you they were lonely.'],
+  marla: ['Fish came back with the tide. They still don\'t care. I still admire them.', 'Nets dry in an afternoon now. Strange world.'],
+  ansel: ['My ferry floated this morning. Then it didn\'t. Then it did. Very patient boat.', 'You could ride the ferry now. If it had a sail. Or a hull.'],
+  calder: ['Listen. Twice a day now, like breathing. I\'d forgotten the sea could sound bored.', 'The hours move again. I have started to be late for things. Glorious.'],
+};
 // dialogue nodes: [speaker, text]
 const DLG = {
   q0intro: [['hesper', "There you are. Nine years I've listened to that bell not ringing. You learn every way silence can sound."],
@@ -529,6 +589,25 @@ const DLG = {
   pellForge: [['pell', 'Bring it here. Let\'s see what the anvil thinks of it.']],
   tibbS1: [['tibb', "There are twelve little chimes lost on the island. I hear them at night. Find them and you can have my lucky whelk. It's very lucky. It's only been stepped on twice."]],
   marlaS2: [['marla', 'My nets went down with the Gannet when the water came. Three bundles. If the sea\'s going out, I want them back before it changes its mind.']],
+  calder: [['calder', 'The hours stopped here when the tide did. The Verger still keeps them. Someone has to, he says. He\'s wrong.'],
+    ['calder', 'When he starts chanting, ring that little bell in his face. He hates being interrupted. Most clergy do.'],
+    ['calder', 'The door won\'t open for anyone but a note it knows. You\'ve brought one, I think. Ring at low water.']],
+  calderWait: [['calder', 'The nave door, child. Low water, then the bell. I would come, but I am busy being old.']],
+  calderAfter: [['calder', 'He kept the hours so long he forgot they were meant to pass. Thank you for reminding him.']],
+  doorHigh: [['', 'The door hums with the bell, but the water is too high to hear it. Ring at low water.']],
+  q4wait: [['hesper', 'Brother Calder keeps his boat by the Abbey. The flats south of the Reach only open at low water.']],
+  q4back: [['hesper', 'The High Note. Clear as cold water. And all three of them humming in your pocket like they know each other.'],
+    ['hesper', 'Bring them to the forge. It is time.']],
+  q5forge: [['hesper', 'I made the Great Bell when I was your age. I got the pitch wrong by a hair, and the sea has been arguing about it ever since.'],
+    ['hesper', 'Pell. Fire, please. Low, Middle, High. In that order, or we all go deaf.']],
+  q5forge2: [['pell', "Don't drop it. I am not doing that twice."],
+    ['hesper', 'Go on. Make it better than I did.']],
+  q5wait: [['hesper', "The Spire. Over the Saint's Causeway at low water. The Hush will let the Bell-Tongue through."]],
+  pellS3: [['pell', "I'm out of brass and patience. Bring me ten scraps and I'll pay you in something shinier."]],
+  pellS3done: [['pell', "Ten. You counted. Most folk don't. Here, these are shinier."]],
+  anselToken: [['ansel', "Listen to that. The mire's draining. First time in years I can see my own boots."],
+    ['ansel', "Here. My ferry token. The ferry's going nowhere, but the token still remembers what it's for. Keeps you patched up."]],
+  bellIntro: [['', 'The Great Bell hangs cracked and silent. The Bell-Tongue warms in your hand.']],
   bellpostFirst: [['', 'The Bell-post hums as you touch it. Its little bell glows brass.']],
   sluiceA_low: [['', "It's resting on the mud. It needs water under it."]],
   sluiceB_high: [['', 'The stone sits at the bottom of the pool, under deep water. It will have to wait for low tide.']],
@@ -569,13 +648,24 @@ const QUESTS = {
     { t: 'Return to Hesper', done: S => S.flags.talkHesper3, marker: [4, -94] },
   ], reward: { xp: 250, glass: 150 }, next: 'Q4' },
   Q4: { n: 'Low Hours', sum: 'The High Note went down with the Abbey. Brother Calder keeps a boat there.', steps: [
-    { t: 'Reach the Drowned Abbey (low tide flats)', done: S => S.flags.bellposts.includes('BP5'), marker: [12, 58] },
-    { t: 'To be continued in the next build', done: S => false, marker: [14, 56] },
-  ], reward: { xp: 300, glass: 200 }, next: null },
+    { t: 'Reach the Drowned Abbey (low tide flats) and wake its Bell-post', done: S => S.flags.bellposts.includes('BP5'), marker: [12, 58] },
+    { t: 'Talk to Brother Calder in his rowboat', done: S => S.flags.talkCalder || S.flags.abbeyDoor, marker: [14, 55] },
+    { t: 'At LOW tide, ring the Saltbell at the nave door', done: S => S.flags.abbeyDoor, marker: [28, 56.5] },
+    { t: 'Defeat the Verger of Low Hours (ring to break his chant)', done: S => S.flags.bosses.B2, marker: [28, 75] },
+    { t: 'Take the High Note', done: S => S.keyItems.includes('highNote'), marker: [28, 75] },
+    { t: 'Return to Hesper', done: S => S.flags.talkHesper4, marker: [4, -94] },
+  ], reward: { xp: 300, glass: 200 }, next: 'Q5' },
+  Q5: { n: 'Recast', sum: 'Three notes, one bell. Hesper and Pell will cast them into the Bell-Tongue.', steps: [
+    { t: 'Talk to Hesper', done: S => S.keyItems.includes('tongue'), marker: [4, -94] },
+    { t: "At LOW tide, cross the Saint's Causeway and wake the Spire Bell-post", done: S => S.flags.bellposts.includes('BP6'), marker: [0, 100] },
+    { t: 'Defeat the Undertoll', done: S => S.flags.bosses.B3, marker: [-6, 110] },
+    { t: 'Ring the Great Bell', done: S => S.flags.won, marker: [-6, 110] },
+  ], reward: { xp: 0, glass: 0 }, next: null },
 };
 const SIDE = {
   S1: { n: 'Twelve Small Voices', giver: 'tibb', sum: 'Find the 12 lost chimes for Tibb. Rewards at 4, 8 and 12.' },
   S2: { n: 'Nets in the Wreck', giver: 'marla', sum: 'Recover Marla\'s 3 net bundles from the wrecks at low tide.' },
+  S3: { n: 'Brass for the Forge', giver: 'pell', sum: 'Bring Pell 10 brass scraps.' },
 };
 const NETS = [{ id: 'n1', x: -22, z: -6 }, { id: 'n2', x: 16, z: -26 }, { id: 'n3', x: -28, z: 18 }];
 const SLUICE = { A: { x: 50, z: -38 }, B: { x: 58, z: -24 }, C: { x: 78, z: -40 } };
@@ -583,7 +673,13 @@ const SLUICE = { A: { x: 50, z: -38 }, B: { x: 58, z: -24 }, C: { x: 78, z: -40 
 /* ---------- bosses (design 7) ---------- */
 const BOSSES = {
   B1: { name: 'Gristlemaw, the Wreck-Shell', hp: 1100, x: 12, z: 24, r: 14, xp: 300, glass: 120, item: 'knot', key: 'lowNote' },
+  B2: { name: 'The Verger of Low Hours', hp: 2200, x: 28, z: 76, xp: 500, glass: 250, item: 'crook', key: 'highNote', rect: [21, 59.6, 35, 85.2] },
+  B3: { name: 'The Undertoll', hp: 4000, x: -6, z: 110, r: 11, xp: 0, glass: 0, knotHp: 300 },
 };
+// nave hour pillars (Verger), Great Bell position
+const HOUR_PILLARS = [[21.6, 60.6], [34.4, 60.6], [34.4, 84.4], [21.6, 84.4]];
+const GREAT_BELL = { x: -6, z: 110 };
+const NATURAL_TIDE = 90;   // post-game: the tide flips by itself every 90 s
 
 /* ===== core.js ===== */
 /* =====================================================================
@@ -751,7 +847,7 @@ const saveSettings = () => LS.set('settings', JSON.stringify(SET));
 
 function newSave(coat) {
   return {
-    v: 1, created: Date.now(), playtimeS: 0, coat: coat | 0,
+    v: SAVE_V, created: Date.now(), playtimeS: 0, coat: coat | 0,
     hero: { lvl: 1, xp: 0, hp: 100, sta: 100, res: 0, pts: 0, ranks: { peal: 1, undertow: 0, ward: 0 }, passives: [] },
     pos: { x: 0, z: -107 }, face: 0, respawnBP: 'BP1', tide: 1, dayT: .05, zonesSeen: [], firstRingZones: [],
     eq: { hook: 1, coat: 2, boots: 3, charm: 0 },
@@ -759,16 +855,25 @@ function newSave(coat) {
     nextUid: 4,
     mats: { glass: 0, brass: 0, pearl: 0 }, tonics: { max: 3, cur: 3 }, keyItems: [],
     quests: { main: { id: 'Q0', step: 0 }, side: { S1: { started: false, chimes: 0, turnedIn: 0, done: false }, S2: { started: false, nets: [], done: false }, S3: { started: false, done: false } }, done: [] },
-    flags: { chests: [], chimes: [], bellposts: [], bosses: { B1: false, B2: false, B3: false }, sluice: { A: false, B: false, C: false }, abbeyDoor: false, gateOpen: false, won: false, echo: {}, buoys: 0 },
+    flags: { chests: [], chimes: [], bellposts: [], bosses: { B1: false, B2: false, B3: false }, sluice: { A: false, B: false, C: false }, abbeyDoor: false, gateOpen: false, won: false, echo: {}, buoys: 0, pans: [] },
     wick: { brassBoughtSinceRest: 0 },
   };
 }
-// fill unknown/missing fields from a fresh save (migration by defaults)
+// save versions: 1 = builds M1..M3 (Q4 stopped at a placeholder step), 2 = 1.0 (full game)
+const SAVE_V = 2;
+// fill unknown/missing fields from a fresh save, then run migrations by version
 function migrate(s) {
+  const from = +s.v || 1;
   const d = newSave(s.coat || 0);
   const fill = (dst, src) => { for (const k in src) { if (dst[k] === undefined) dst[k] = src[k]; else if (src[k] && typeof src[k] === 'object' && !Array.isArray(src[k]) && typeof dst[k] === 'object') fill(dst[k], src[k]); } };
   fill(s, d);
-  s.v = 1;
+  if (from < 2) {
+    // v1 -> v2: Q4 had a "to be continued" step 1; the real step 1 is "talk to Calder"
+    const m = s.quests.main; if (m.id === 'Q4' && m.step > 1) m.step = 1;
+    // the Q1 pan over the Reach was tracked by flags.panDone
+    if (s.flags.panDone && !s.flags.pans.includes('reach')) s.flags.pans.push('reach');
+  }
+  s.v = SAVE_V;
   return s;
 }
 const Store = {
@@ -796,6 +901,7 @@ const SONGS = {
   mirewood: { bpm: 70, ch: [[48, 51, 55, 58], [41, 53, 57, 60], [48, 51, 55, 58], [46, 50, 53, 58]], pad: 600, muted: 1, rain: 1 },
   coral: { bpm: 84, ch: [[41, 53, 57, 60], [41, 55, 59, 62], [40, 52, 55, 59], [41, 53, 57, 64]], pad: 1100, arp: 2 },
   abbey: { bpm: 60, ch: [[42, 54, 57, 61], [43, 55, 59, 62], [42, 54, 57, 61], [40, 52, 55, 59]], pad: 1200, organ: 1 },
+  spire: { bpm: 66, ch: [[38, 50, 57, 62], [41, 53, 57, 60], [36, 48, 55, 62], [43, 50, 55, 59]], pad: 800, fifths: 1, bell: 2 },
   boss: { bpm: 112, ch: [[38, 50, 53, 57], [34, 46, 50, 53], [36, 48, 52, 55], [33, 45, 49, 52]], pad: 1000, boss: 1 },
 };
 const AU = {
@@ -967,6 +1073,15 @@ const AU = {
       case 'clang': this.osc('square', 220, t, .3, .1, B); this.bell(t, 880, .15, .8, B); break;
       case 'rest': [50, 57, 62, 66].forEach((n, i) => this.bell(t + i * .18, mtof(n + 12), .1, 2, B)); break;
       case 'swept': this.sweep(t, 300, 1500, .8, .35); break;
+      case 'thunder': this.noiseHit(t, 160, .45, 1.6, B); this.noiseHit(t + .05, 900, .15, .5, B); break;
+      case 'note': { const f = a === 'lowNote' ? 98 : a === 'midNote' ? 146.8 : 196; [1, 2, 3.01].forEach((p, i) => this.bell(t, f * p * 2, .14 / (i + 1), 3.5, B)); break; }
+      case 'chord': {   // the full Saltbell chord: base partials plus the three Notes
+        const P = [.5, 1, 1.19, 1.56, 2, 2.51, 3.01];
+        P.forEach((p, i) => { const o = this.osc('sine', 196 * p, t, 6 + i * .4, .26 / (i + 1), B, .01); o.g.connect(this.verbIn); });
+        [98, 146.8, 196, 293.7, 392].forEach((f, i) => this.bell(t + .15 + i * .22, f * 2, .12, 6, B));
+        this.sweep(t + .2, 200, 3000, 4, .2);
+        break;
+      }
     }
   },
 };
@@ -1044,7 +1159,7 @@ function initRenderer() {
   R.bossLight = new THREE.PointLight(0x8fe3cf, 0, 12, 1.5); R.scene.add(R.bossLight);
   applyTier(R.tierName);
   buildSky();
-  buildParticles(); buildRain(); buildDecals();
+  buildParticles(); buildRain(); buildDecals(); buildBlobs();
   R.cam = { x: 0, y: 0, z: 0, tx: 0, tz: 0, ty: 0, dist: SET.zoom, extra: 0, trauma: 0, mode: 'follow' };
   onResize(); addEventListener('resize', onResize);
 }
@@ -1062,7 +1177,7 @@ function onResize() {
   const w = innerWidth, h = innerHeight;
   R.renderer.setSize(w, h, false);
   R.camera.aspect = w / h; R.camera.fov = w / h < 1 ? 55 : 45; R.camera.updateProjectionMatrix();
-  R.portrait = w / h < 1;
+  R.portrait = w / h < 1; R.land = w > h && h < 520;
 }
 
 /* ---------- sky dome + clouds ---------- */
@@ -1140,6 +1255,7 @@ function tColor(x, z, h, slope, rng) {
   if (h < 0) { c.set(0xb8a47c); c.lerp(_ca.set(0x8f8466), clamp(n1 * .5 + .5, 0, 1) * .45); c.lerp(_ca.set(0x4f6a66), clamp(-h / 5, 0, 1) * .85); if (h > -2.6 && n2 > .55) c.lerp(_ca.set(0x7d8a6a), .35); }
   else if (h < 1.5) { c.set(PAL.drySand); c.lerp(_ca.set(PAL.wetSand), clamp(1 - h / .6, 0, 1)); if (h > 1.1) c.lerp(_ca.set(PAL.moss), (h - 1.1) / .4 * .6); }
   else { c.set(PAL.moss); c.lerp(_ca.set(n1 > 0 ? 0x8f9c5a : 0x557538), Math.abs(n1) * .55); if (n2 > .6) c.lerp(_ca.set(0xa59a62), .3); c.lerp(_ca.set(0x5f7d42), rng() * .3); }
+  const sd = dist(x, z, -6, 108); if (sd < 17 && h > .4) { const cell = (Math.floor(x / 2.4) + Math.floor(z / 2.4)) & 1; c.set(cell ? 0x84827a : 0x76756f); c.lerp(_ca.set(0x7d8a80), clamp(n2, 0, 1) * .35); if (sd > 13.5) c.lerp(_ca.set(0x6b7780), clamp((sd - 13.5) / 2.5, 0, 1)); }
   const md = dist(x, z, 64, -28); if (md < 36 && h > -1.6) c.lerp(_ca.set(h < .2 ? 0x4a4a32 : 0x56683a), clamp((36 - md) / 6, 0, 1) * .7);
   if (slope > .8) c.lerp(_ca.set(PAL.slate), clamp((slope - .8) / .4, 0, 1));
   const v = .94 + rng() * .1; c.multiplyScalar(v);
@@ -1226,6 +1342,22 @@ function updateParticles(dt) {
     R.pm.setMatrixAt(w, _m4); R.pm.setColorAt(w, p.c); P[w++] = p;
   }
   P.length = w; R.pm.count = w; R.pm.instanceMatrix.needsUpdate = true; if (R.pm.instanceColor) R.pm.instanceColor.needsUpdate = true;
+}
+/* ---------- blob shadows (Low tier has no shadow map) ---------- */
+function buildBlobs() {
+  const tex = (() => { const c = document.createElement('canvas'); c.width = c.height = 64; const x = c.getContext('2d'), g = x.createRadialGradient(32, 32, 4, 32, 32, 32); g.addColorStop(0, 'rgba(0,0,0,.55)'); g.addColorStop(.6, 'rgba(0,0,0,.3)'); g.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = g; x.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
+  R.blobs = new THREE.InstancedMesh(new THREE.PlaneGeometry(2, 2).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, color: 0x000000, opacity: .9, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 }), 72);
+  R.blobs.count = 0; R.blobs.frustumCulled = false; R.blobs.renderOrder = 1; R.scene.add(R.blobs);
+}
+function updateBlobs() {
+  if (!R.blobs) return;
+  if (R.tierName !== 'low' || !G.S || G.state === 'title') { R.blobs.count = 0; return; }
+  let n = 0;
+  const put = (x, z, r) => { if (n >= 72 || dist2(x, z, HERO.x, HERO.z) > 1600) return; const y = Math.max(H(x, z), G.waterY) + .05; _m4.makeScale(r, 1, r); _m4.setPosition(x, y, z); R.blobs.setMatrixAt(n++, _m4); };
+  if (HERO.model) put(HERO.x, HERO.z, .6);
+  for (const e of G.enemies) { if (e.hidden || e.st === 'sink' || e.st === 'burrow' || (e.untargetable && e.boss === 'B3')) continue; put(e.x, e.z, e.boss ? e.size * .75 : e.size * .8 + .2); }
+  for (const id in W.npcs) put(W.npcs[id].x, W.npcs[id].z, .55);
+  R.blobs.count = n; R.blobs.instanceMatrix.needsUpdate = true;
 }
 /* ---------- rain ---------- */
 function buildRain() {
@@ -1630,7 +1762,7 @@ const G = {   // runtime (not saved) state
   state: 'boot', S: null, slot: 0, time: 0, hitStop: 0, slowT: 0, slowScale: 1,
   tide: 1, tideTarget: 1, tideFrom: 1, tideT: 1, waterY: 0, bellCd: 0, hush: 0,
   enemies: [], proj: [], pickups: [], zone: null, lastCombat: -99, boss: null, arena: null, cine: null, msgs: [],
-  groups: {}, interact: null, autosaveT: 0,
+  groups: {}, interact: null, autosaveT: 0, turbo: 1, natT: 0,
 };
 const HERO = { x: 0, z: 0, y: 0, a: 0, vx: 0, vz: 0, st: 'move', t: 0, combo: 0, queued: false, comboWin: 0, inv: 0, sta: 100, staDelay: 0, res: 0, resIdle: 0, hp: 100, cds: { peal: 0, undertow: 0, ward: 0, tonic: 0 }, ward: null, hitSet: null, model: null, stepT: 0, splashT: 0, pdCd: 0, flinch: 0, moving: 0 };
 
@@ -1654,7 +1786,7 @@ function stats() {
     maxhp: Math.round(maxhp), def, atk, P: pow, dmgMul, crit: (5 + eqSum('crit')) / 100, move: 5.5 * (1 + eqSum('move') / 100),
     resGain: 1 + eqSum('res') / 100, tonicHeal: .4 + eqSum('tonic') / 100, dodgeCost: (hasPassive('steady') ? 18 : 25) - (hasSp('dodgeCost') ? 5 : 0),
     dodgeDist: 4.2 + (hasSp('dodge') ? .6 : 0), staRegen: 35 * (hasSp('sta') ? 1.15 : 1), reach: hasSp('reach') ? .4 : 0,
-    shallow: hasSp('noSlow') ? 1 : hasSp('wade') ? .8 : .65, bellCd: hasPassive('tidecaller') ? 12 : 20,
+    shallow: hasSp('noSlow') ? 1 : hasSp('wade') ? .8 : .65, bellCd: G.S.flags.won ? 6 : hasPassive('tidecaller') ? 12 : 20,
   };
 }
 let ST = null;  // cached stats, refreshed by refreshStats()
@@ -1681,25 +1813,31 @@ function setHeroModel() {
   HERO.shadowHalo = null;
 }
 function nearestEnemy(x, z, r, a, cone) {
-  let best = null, bd = r * r;
+  // distance to the enemy's edge (size), so a 5 m boss counts as near when you stand at its claws
+  let best = null, bd = r;
   for (const e of G.enemies) {
-    if (!targetable(e)) continue; const d = dist2(x, z, e.x, e.z);
+    if (!targetable(e)) continue; const d = Math.max(0, dist(x, z, e.x, e.z) - (e.boss ? e.size * .6 : 0));
     if (d > bd) continue; if (cone && Math.abs(angDiff(a, angTo(x, z, e.x, e.z))) > cone * Math.PI / 360) continue;
     bd = d; best = e;
   }
   return best;
 }
-const targetable = e => e.hp > 0 && !['dead', 'sink', 'burrow', 'emerge', 'statue', 'burrowing'].includes(e.st) && !e.inert || (e.inert && e.hp > 0);
+const targetable = e => e.hp > 0 && !e.untargetable && (!['dead', 'sink', 'burrow', 'emerge', 'statue', 'burrowing'].includes(e.st) && !e.inert || (e.inert && e.hp > 0));
 function autoAim(range, allowPosts) {
   if (IN.mouseAim()) { const p = IN.aimPoint; return angTo(HERO.x, HERO.z, p.x, p.z); }
-  let e = nearestEnemy(HERO.x, HERO.z, range, HERO.a, 100) || nearestEnemy(HERO.x, HERO.z, range);
+  const face = Math.hypot(IN.move.x, IN.move.z) > .2 ? Math.atan2(IN.move.x, IN.move.z) : HERO.a;
+  let e = nearestEnemy(HERO.x, HERO.z, range, face, 100);
+  // Undertow: a grapple post within ~60 deg of where you face wins over enemies that are behind you
+  if (allowPosts) { const p = nearestPost(range, face, POST_CONE); if (p && (!e || dist(HERO.x, HERO.z, p.x, p.z) < dist(HERO.x, HERO.z, e.x, e.z))) return angTo(HERO.x, HERO.z, p.x, p.z); }
+  e = e || nearestEnemy(HERO.x, HERO.z, range);
   if (e) return angTo(HERO.x, HERO.z, e.x, e.z);
   if (allowPosts) { const p = nearestPost(range); if (p) return angTo(HERO.x, HERO.z, p.x, p.z); }
   return HERO.a;
 }
-function nearestPost(range, a) {
+const POST_CONE = 60 * Math.PI / 180;   // half-angle of the Undertow post snap
+function nearestPost(range, a, cone = .45) {
   let best = null, bd = range * range;
-  for (const p of POSTS) { const d = dist2(HERO.x, HERO.z, p.x, p.z); if (d < 2.5 || d > bd) continue; if (a !== undefined && Math.abs(angDiff(a, angTo(HERO.x, HERO.z, p.x, p.z))) > .45) continue; bd = d; best = p; }
+  for (const p of POSTS) { const d = dist2(HERO.x, HERO.z, p.x, p.z); if (d < 2.5 || d > bd) continue; if (a !== undefined && Math.abs(angDiff(a, angTo(HERO.x, HERO.z, p.x, p.z))) > cone) continue; bd = d; best = p; }
   return best;
 }
 function heroTryMove(nx, nz) {
@@ -1898,7 +2036,7 @@ function doPeal(a, rank) {
 function throwChain(a, range, rank) {
   const h = HERO; AU.sfx('undertow');
   // target post if aiming at one and no enemy along the line
-  G.proj.push({ kind: 'chain', x: h.x, z: h.z, a, d: 0, range, rank, post: nearestPost(range + .5, a), t: 0 });
+  G.proj.push({ kind: 'chain', x: h.x, z: h.z, a, d: 0, range, rank, post: nearestPost(range + .5, a, .2), t: 0 });
 }
 function tryRing() {
   const h = HERO, S = G.S;
@@ -2001,7 +2139,7 @@ function removeEnemy(e) {
 }
 function stagger(e, t) { if (e.boss || e.st === 'dead') return; if (e.decal) { e.decal.free(); e.decal = null; } if (e.decals) { e.decals.forEach(d => d.free()); e.decals = null; } e.st = 'stagger'; e.t = 0; e.stun = t; e.diving = false; }
 function damageEnemy(e, mult, o = {}) {
-  if (e.hp <= 0 || e.st === 'emerge' || e.st === 'statue') { if (e.st === 'statue') dmgNum(e.x, e.y + 2, e.z, 'immune', 'small'); return 0; }
+  if (e.hp <= 0 || e.untargetable || e.st === 'emerge' || e.st === 'statue') { if (e.st === 'statue') dmgNum(e.x, e.y + 2, e.z, 'immune', 'small'); return 0; }
   let d = o.flat ?? Math.round(ST.P * mult * rand(.9, 1.1) * ST.dmgMul);
   if (o.crit) d *= 1.5;
   let armour = e.D.armour && !(e.cracked > 0) ? e.D.armour : 0;
@@ -2014,10 +2152,11 @@ function damageEnemy(e, mult, o = {}) {
   if (o.src === 'undertow' && G.tideTarget === 0 && (e.st === 'emerge' || e.st === 'burrow')) d *= 1.5;
   if (e.boss) d = e.bossMod(d, o);
   d = Math.max(1, Math.round(d * (1 - armour)));
-  if (e.D.heavy && !e.boss) { e.hitLog = (e.hitLog || []).filter(t => t > G.time - 5); e.hitLog.push(G.time); if (e.hitLog.length >= 6 && !(e.cracked > 0)) { e.cracked = 8; toast('Armour cracked!', 'brass', 1); } }
+  if (e.D.armour && !e.boss) { e.hitLog = (e.hitLog || []).filter(t => t > G.time - 5); e.hitLog.push(G.time); if (e.hitLog.length >= 6 && !(e.cracked > 0)) { e.cracked = 8; toast('Armour cracked!', 'brass', 1); } }
   e.hp -= d; e.flash = .08; e.squash = .1; G.lastCombat = G.time; e.aggro = true;
   if (e.channel) { e.channelDmg = (e.channelDmg || 0) + d; }
-  dmgNum(e.x, e.y + 1.6 * e.size + .6, e.z, d, o.crit ? 'crit' : armour > .5 ? 'small' : '');
+  dmgNum(e.x, e.y + (e.dmgY ?? 1.6 * e.size + .6), e.z, d, o.crit ? 'crit' : e.shellHit ? 'shell' : armour > .5 ? 'small' : '');
+  e.shellHit = false;
   AU.sfx('hit', o.crit);
   burst(e.x, e.y + .6 * e.size, e.z, randi(6, 10), o.crit ? PAL.brass : 0xffffff, 4, .35);
   if (e.hp <= 0) { killEnemy(e); return d; }
@@ -2065,7 +2204,7 @@ function moveEnemy(e, dx, dz) {
     if (D.flyer) return Math.abs(x) < 120 && Math.abs(z) < 120;
     if (e.type === 'lamprey') return G.waterY - H(x, z) >= .3 && !slopeBlocked(x, z);
     if (D.floater) return G.waterY - H(x, z) >= .05;
-    if (e.boss) return dist(x, z, e.home.x, e.home.z) < e.arenaR;
+    if (e.boss) return e.rect ? x > e.rect[0] && x < e.rect[2] && z > e.rect[1] && z < e.rect[3] : dist(x, z, e.home.x, e.home.z) < e.arenaR;
     return walkable(x, z, G.waterY);
   };
   if (ok(nx, nz)) { e.x = nx; e.z = nz; } else if (ok(nx, e.z)) e.x = nx; else if (ok(e.x, nz)) e.z = nz;
@@ -2074,7 +2213,7 @@ function moveEnemy(e, dx, dz) {
 function enemiesUpdate(dt) {
   const h = HERO;
   for (const e of G.enemies.slice()) {
-    if (e.boss) { e.update(dt); continue; }
+    if (e.update) { e.update(dt); continue; }
     e.t += dt; e.flash -= dt; e.squash = (e.squash || 0) - dt; e.cracked -= dt; e.guardBroken -= dt; e.atkCd -= dt; e.slow -= dt;
     const D = e.D, dh = dist(e.x, e.z, h.x, h.z);
     // knockback velocity
@@ -2084,6 +2223,7 @@ function enemiesUpdate(dt) {
     switch (e.st) {
       case 'emerge': if (e.t >= 1.2) { e.st = 'idle'; e.t = 0; } break;
       case 'statue': break;
+      case 'wake': if (e.t < .05) burst(e.x, e.y + 1.4, e.z, 14, 0x9aa0a4, 3, .5); if (e.t >= .8) { e.st = 'idle'; e.t = 0; } break;
       case 'idle': case 'chase': {
         if (e.inert) break;
         const aggroR = D.aggro || 9;
@@ -2138,7 +2278,7 @@ function enemiesUpdate(dt) {
       const depth = G.waterY - H(e.x, e.z);
       if ((e.type === 'lamprey' || e.D.floater) && depth < .05 && e.st !== 'stranded') { e.st = 'stranded'; e.t = 0; e.strandT = e.strandT || 4; if (e.decal) { e.decal.free(); e.decal = null; } }
       if (e.st === 'stranded' && depth > .4 && e.t > .5) { e.st = 'chase'; e.t = 0; }
-      if (!D.flyer && !D.water && !D.floater && depth > .7 && e.st !== 'emerge') {   // swept
+      if (!D.flyer && !D.water && !D.floater && depth > .7 && e.st !== 'emerge' && e.st !== 'statue') {   // swept
         const to = nearestWalkable(e.x, e.z, lerp(WATER_LOW, WATER_HIGH, G.tideTarget), 16);
         e.hp -= Math.round(e.max * .25); burst(e.x, G.waterY, e.z, 10, 0xd8f6ee, 3, .5);
         if (to && e.hp > 0) { e.x = to[0]; e.z = to[1]; stagger(e, 1); } else { e.noReward = true; killEnemy(e); }
@@ -2149,7 +2289,7 @@ function enemiesUpdate(dt) {
   // separation
   const E = G.enemies;
   for (let i = 0; i < E.length; i++) for (let j = i + 1; j < E.length; j++) {
-    const a = E[i], b = E[j]; if (a.boss || b.boss || a.D.flyer || b.D.flyer) continue;
+    const a = E[i], b = E[j]; if (a.update || b.update || a.D.flyer || b.D.flyer) continue;
     const r = (a.size + b.size) * .45, dx = b.x - a.x, dz = b.z - a.z, d = Math.hypot(dx, dz);
     if (d > 0 && d < r) { const p = (r - d) / 2 / d; if (!a.inert) moveEnemy(a, -dx * p, -dz * p); if (!b.inert) moveEnemy(b, dx * p, dz * p); }
   }
@@ -2196,7 +2336,11 @@ function animateEnemy(e, dt) {
   else if (e.st === 'stranded' || e.st === 'stagger') { em.set(0x8fe3cf); m.mat.emissiveIntensity = .25 + .2 * Math.sin(G.time * 10); }
   else if (e.st === 'statue') { em.set(0); m.mat.emissiveIntensity = 0; }
   else m.mat.emissiveIntensity = 0;
-  if (e.st === 'statue') { g.rotation.x = 0; }
+  if ((e.st === 'statue') !== !!e._stone) {   // drowned acolytes turn to grey stone at high tide
+    e._stone = e.st === 'statue';
+    if (!STONE_MAT) STONE_MAT = new THREE.MeshStandardMaterial({ color: 0x8d969b, flatShading: true, roughness: 1 });
+    g.traverse(o => { if (o.isMesh && (o.material === m.mat || o.material === STONE_MAT)) o.material = e._stone ? STONE_MAT : m.mat; });
+  }
   const t = G.time + e.id;
   if (e.type === 'skitter') { const s = Math.sin(t * 14) * .3 * (e.st === 'chase' ? 1 : .2); P.legL.rotation.x = s; P.legR.rotation.x = -s; }
   if (e.type === 'gull') { const f = e.diving ? .1 : Math.sin(t * 8) * .5; m.parts.wL.rotation.z = f; m.parts.wR.rotation.z = -f; m.parts.b.rotation.x = e.diving ? .3 : 0; if (e.st === 'landed') { m.parts.wL.rotation.z = .9; m.parts.wR.rotation.z = -.9; } }
@@ -2207,6 +2351,7 @@ function animateEnemy(e, dt) {
   if (e.orbit) e.orbit.rotation.y += dt * 2;
 }
 
+let STONE_MAT = null;
 /* ---------- projectiles ---------- */
 function projUpdate(dt) {
   const h = HERO;
@@ -2343,9 +2488,11 @@ function spawnGristlemaw() {
     max: B.hp, hp: B.hp, size: 4.2, st: 'idle', t: 0, model: { g: md.g, mat: md.mat, parts: {} }, md, flash: 0, atkT: 2, callT: 25, addT: 20, phase: 1, tilt: 0, xp: B.xp, hits: [],
   };
   e.lowState = () => G.tideTarget === 0 && G.tide < .25;
-  e.bossMod = (d, o) => { if (!e.lowState() && !e.stunned) { if (G.time - (e.lastShellMsg || -9) > 4) { e.lastShellMsg = G.time; toast('Its shell takes the blow. Ring the tide out!', 'warn', 1.5); } return d * .15; } return e.stunMul && e.stunned > 0 ? d * 1.0 : d; };
+  e.dmgY = 3.6;
+  e.bossMod = (d, o) => { if (!e.lowState() && !(e.stunned > 0)) { e.shellHit = true; if (G.time - (e.lastShellMsg || -9) > 4) { e.lastShellMsg = G.time; toast('Its shell takes the blow (-85%). Ring the tide out!', 'warn', 1.5); } return d * .15; } return d; };
   e.update = dt => gristleUpdate(e, dt);
   e.onDeath = () => gristleDeath(e);
+  e.cleanup = () => { R.scene.remove(md.g); freeBossDecals(e); };
   G.enemies.push(e); G.boss = e; return e;
 }
 function bossAttack(e, kind) {
@@ -2361,6 +2508,7 @@ function bossAttack(e, kind) {
 function freeBossDecals(e) { if (e.decals) e.decals.forEach(d => d && d.free()); e.decals = null; }
 function interruptChannel(e) {
   if (!e.channel) return; e.channel = false; freeBossDecals(e);
+  if (e.onInterrupt) { e.onInterrupt(); G.hitStop = .14; shake(.4); return; }
   e.st = 'stun'; e.t = 0; e.stunned = 3; toast('Interrupted! Gristlemaw is stunned', 'brass', 1.5);
   G.hitStop = .14; shake(.4);
 }
@@ -2482,10 +2630,19 @@ function flipTide(silent) {
   // first ring per zone: drama
   const zid = G.zone ? G.zone.id : 'none';
   if (!silent && !S.firstRingZones.includes(zid)) { S.firstRingZones.push(zid); G.slowT = 1.5; G.slowScale = .6; }
+  // first ring per zone: a short camera pan over the flats that just changed (design 5, Feedback)
+  const pan = ZONE_PANS[zid];
+  if (!silent && pan && !G.arena && !G.cine && !S.flags.pans.includes(zid) && !(zid === 'reach' && S.quests.main.id === 'Q1')) { S.flags.pans.push(zid); G.cine = { t: 0, dur: 4, x: pan[0], z: pan[1] }; }
   // groups that no longer match sink (water enemies left high and dry get Stranded instead)
   for (const e of G.enemies) {
     if (!e.group || e.boss) continue;
-    const def = e.group.def; if (def.tide === 'any') continue;
+    const def = e.group.def;
+    if (def.statue && e.type === 'acolyte') {   // Drowned Acolytes: statues at HIGH, awake at LOW
+      if (G.tideTarget === 1 && !['dead', 'sink', 'burrow'].includes(e.st)) { if (e.decal) { e.decal.free(); e.decal = null; } e.st = 'statue'; e.t = 0; e.aggro = false; e.kvx = e.kvz = 0; e.hop = 0; }
+      else if (G.tideTarget === 0 && e.st === 'statue') { e.st = 'wake'; e.t = 0; }
+      continue;
+    }
+    if (def.tide === 'any') continue;
     const match = def.tide === (G.tideTarget ? 'high' : 'low');
     if (match) continue;
     if ((e.type === 'lamprey' || e.D.floater) && G.tideTarget === 0) continue;   // stranded by draining water
@@ -2493,8 +2650,10 @@ function flipTide(silent) {
     if (e.decal) { e.decal.free(); e.decal = null; }
     e.st = e.type === 'mudskip' ? 'burrow' : 'sink'; e.t = 0;
   }
+  if (G.tideTarget === 0) for (const id in G.groups) { const g = G.groups[id]; if (g.def.statue && g.spawned && !g.cleared) topUpGroup(g); }
   questEvent('tide', G.tideTarget);
 }
+const ZONE_PANS = { reach: [-6, -14], mirewood: [64, -28], coral: [-46, 46], abbey: [24, 70], causeway: [12, 92] };
 function forceTide(t) { if (G.tideTarget !== t) flipTide(true); AU.sfx('swept'); }
 function tideUpdate(dt) {
   if (G.tideT < 1) {
@@ -2526,14 +2685,18 @@ function groupActive(def) {
   if (def.id === 'GQ1') return S.quests.main.id === 'Q1' && !S.flags.nest;
   if (def.id === 'GQ3') return S.quests.main.id === 'Q3' && S.quests.main.step >= 2 && !S.flags.warden;
   if (def.id === 'GQ3b') return !!S.flags.ambush && !S.flags.ambushDone && G.tideTarget === 0;
+  if (def.id === 'GQ4') return !!S.flags.abbeyDoor && !S.flags.gq4Done && !S.flags.bosses.B2;
+  if (def.statue) return true;   // statues at high tide, awake at low
   if (def.tide !== 'any' && def.tide !== (G.tideTarget ? 'high' : 'low')) return false;
   return true;
 }
 function initGroups() { G.groups = {}; for (const def of GROUPS) G.groups[def.id] = { def, alive: [], spawned: false, cleared: false, clearedAt: 0 }; }
 function spawnGroup(g) {
   const def = g.def, Z = zoneAt(def.x, def.z), tier = Z ? Z.tier : 1, rng = Math.random;
-  g.spawned = true; g.alive = []; g.killed = 0;
+  g.spawned = true; g.alive = []; g.killed = 0; g.killedN = {};
+  const statues = def.statue && G.tideTarget === 1;
   for (const [type, n, elite] of def.n) for (let i = 0; i < n; i++) {
+    if (statues && type !== 'acolyte') continue;
     let x = def.x, z = def.z;
     for (let k = 0; k < 20; k++) {
       const a = rng() * TAU, r = rng() * def.r, px = def.x + Math.cos(a) * r, pz = def.z + Math.sin(a) * r;
@@ -2541,12 +2704,21 @@ function spawnGroup(g) {
       const ok = D.flyer ? true : type === 'lamprey' ? depth >= .5 : D.floater ? depth >= .3 : (walkable(px, pz, wy) && !insideCollider(px, pz, .6));
       if (ok) { x = px; z = pz; break; }
     }
-    const e = spawnEnemy(type, x, z, { tier, elite: !!elite, group: g });
+    const e = spawnEnemy(type, x, z, { tier, elite: !!elite, group: g, emerge: statues ? false : undefined });
+    if (statues) { e.st = 'statue'; e.a = rand(-.6, .6); }
     if (def.id === 'GQ3' && elite) { e.max = e.hp = Math.round(e.max * 1.5); e.model.g.scale.setScalar(1.9); e.size *= 1.5; e.D = Object.assign({}, e.D, { name: 'Mire Warden' }); toast('The Mire Warden squats on stone C', 'warn', 2.5); }
     g.alive.push(e);
   }
 }
-function groupKilled(e) { const g = e.group; g.alive = g.alive.filter(x => x !== e); if (!g.alive.length) { g.cleared = true; g.spawned = false; g.clearedAt = G.time; if (g.def.id === 'GQ1') { G.S.flags.nest = true; toast('The gull nest is cleared', 'brass', 2); } if (g.def.id === 'GQ3') { G.S.flags.warden = true; toast('The Mire Warden falls. Stone C is free.', 'brass', 2.5); } if (g.def.id === 'GQ3b') G.S.flags.ambushDone = true; } }
+function topUpGroup(g) {   // statue group at low tide: bring back the non-acolyte members that sank
+  const tier = (zoneAt(g.def.x, g.def.z) || { tier: 1 }).tier;
+  for (const [type, n, elite] of g.def.n) {
+    if (type === 'acolyte') continue;
+    const have = g.alive.filter(e => e.type === type).length + ((g.killedN || {})[type] || 0);
+    for (let i = have; i < n; i++) { const p = nearestWalkable(g.def.x + rand(-2, 2), g.def.z + rand(-2, 2), WATER_LOW, 6) || [g.def.x, g.def.z]; g.alive.push(spawnEnemy(type, p[0], p[1], { tier, elite: !!elite, group: g })); }
+  }
+}
+function groupKilled(e) { const g = e.group; g.alive = g.alive.filter(x => x !== e); g.killedN = g.killedN || {}; g.killedN[e.type] = (g.killedN[e.type] || 0) + 1; if (!g.alive.length) { g.cleared = true; g.spawned = false; g.clearedAt = G.time; if (g.def.id === 'GQ1') { G.S.flags.nest = true; toast('The gull nest is cleared', 'brass', 2); } if (g.def.id === 'GQ3') { G.S.flags.warden = true; toast('The Mire Warden falls. Stone C is free.', 'brass', 2.5); } if (g.def.id === 'GQ3b') G.S.flags.ambushDone = true; if (g.def.id === 'GQ4') { G.S.flags.gq4Done = true; toast('The nave falls quiet. Something kneels at the far end.', 'warn', 3); } } }
 function groupLeft(e) { const g = e.group; g.alive = g.alive.filter(x => x !== e); if (!g.alive.length) g.spawned = false; }
 function groupsUpdate() {
   const h = HERO; let active = G.enemies.filter(e => !e.inert && e.st !== 'dead').length;
@@ -2554,7 +2726,7 @@ function groupsUpdate() {
     const g = G.groups[id], def = g.def, d = dist(h.x, h.z, def.x, def.z);
     if (g.spawned && d > 58) { for (const e of g.alive) removeEnemy(e); g.alive = []; g.spawned = false; continue; }
     if (g.cleared && !def.quest && G.time - g.clearedAt > 300 && d > 40) g.cleared = false;
-    if (!g.spawned && !g.cleared && d < 45 && groupActive(def) && active < 14 && (d > 8 || g.firstLoad || def.id === 'GQ3b')) {
+    if (!g.spawned && !g.cleared && d < 45 && groupActive(def) && active < 14 && (d > 8 || g.firstLoad || def.id === 'GQ3b' || def.id === 'GQ4')) {
       if (G.S.flags.bosses.B1 === false && dist(def.x, def.z, 12, 24) < 14) continue;
       spawnGroup(g); active += g.alive.length;
     }
@@ -2684,39 +2856,115 @@ function buildMirewood() {
   addCollider({ x1: 69, z1: -24.5, x2: 69, z2: -15.5, r: .5, on: () => !G.S.flags.gateOpen });
   for (const k of ['A', 'B', 'C']) { const s = SLUICE[k]; const m = meshOf([part(GEO.cyl8, 0x7a848a, [0, .4, 0], 0, [.9, .8, .9]), part(GEO.box, PAL.teal, [0, .82, 0], 0, [1.2, .05, .15])]); m.position.set(s.x, H(s.x, s.z), s.z); R.scene.add(m); s.m = m; KEEP.push([s.x, s.z, 2]); }
 }
-function buildSouth() {
-  // Coral Steps: coral fans and arches
-  const rng = mulberry32(21), P = [];
-  for (let i = 0; i < 40; i++) { const x = -46 + (rng() * 2 - 1) * 22, z = 44 + (rng() * 2 - 1) * 22, h = H(x, z); if (h < -2.5 || h > .5) continue; const c = [0xff9a8a, 0xc7b3ff, 0x8fe3cf][i % 3]; P.push(part(GEO.cone6, c, [x, h + .5, z], [rng() * .4, rng() * 3, rng() * .4], [.6 + rng() * .5, 1.2 + rng(), .15])); }
-  if (P.length) R.scene.add(meshOf(P));
+function buildSouth() { buildCoral(); buildAbbey(); buildCauseway(); buildSpire(); }
+function buildCoral() {
+  // Coral Steps: three reef terraces dressed with fans, brain and tube coral, arches, giant clams and kelp
+  const rng = mulberry32(21), P = [], CC = [0xff9a8a, 0xc7b3ff, 0x8fe3cf, 0xffc58a];
+  const ok = (x, z) => { const h = H(x, z); return h > -2.5 && h < .5 && clearAt(x, z, 1) && !nearPath(x, z, .5); };
+  for (let i = 0; i < 160 && P.length < 150; i++) {
+    const x = -46 + (rng() * 2 - 1) * 22, z = 44 + (rng() * 2 - 1) * 22; if (!ok(x, z)) continue;
+    const h = H(x, z), c = CC[i % 4], k = rng();
+    if (k < .45) P.push(part(GEO.cone6, c, [x, h + .5, z], [rng() * .4, rng() * 3, rng() * .4], [.6 + rng() * .5, 1.2 + rng(), .15]));        // fan
+    else if (k < .7) P.push(part(GEO.sph7, c, [x, h + .15, z], [0, rng() * 3, 0], [.6 + rng() * .4, .4, .6 + rng() * .4]));                   // brain coral
+    else { for (let t = 0; t < 4; t++) P.push(part(GEO.cyl6, c, [x + (rng() - .5) * .6, h + .4, z + (rng() - .5) * .6], [rng() * .3, 0, rng() * .3], [.09, .6 + rng() * .7, .09])); } // tubes
+  }
+  // reef arches (torus halves) over the walk lines
+  for (const [x, z, ry, r] of [[-45, 22, .3, 2.6], [-49, 38, 1.2, 2.4], [-42, 52, .1, 2.2], [-30, 63, 1.4, 2.0], [-56, 44, 2.0, 2.2]]) {
+    const h = H(x, z), arc = new THREE.TorusGeometry(r, .38, 5, 10, Math.PI);
+    P.push(part(arc, 0xe88a7a, [x, h - .1, z], [0, ry, 0])); P.push(part(new THREE.TorusGeometry(r, .2, 4, 8, Math.PI), 0xc7b3ff, [x, h + .05, z], [0, ry, 0], [1.05, 1.08, 1]));
+    for (const sx of [-1, 1]) addCollider({ x: x + Math.cos(ry) * r * sx, z: z - Math.sin(ry) * r * sx, r: .45 });
+    KEEP.push([x, z, r + .5]);
+  }
+  // giant clams (two shell halves and a pearl glint)
+  for (const [x, z, ry] of [[-58, 34, .4], [-40, 44, 2.2], [-52, 52, 1.1], [-30, 54, -.6]]) {
+    const h = H(x, z); P.push(part(GEO.sph7, 0xd8d0e0, [x, h + .15, z], [0, ry, 0], [1.1, .35, .8]), part(GEO.sph7, 0xc8bcd8, [x, h + .55, z], [-.6, ry, 0], [1.05, .3, .75]), part(GEO.sph, 0xf6f2ff, [x, h + .45, z], 0, [.18, .18, .18]));
+    addCollider({ x, z, r: .9 }); KEEP.push([x, z, 1.5]);
+  }
+  // the coral wall that hides the C14 ledge, and kelp
+  for (let k = 0; k < 9; k++) { const a = Math.PI * (.15 + k * .09), x = -34 + Math.cos(a) * 3.6, z = 64 + Math.sin(a) * 3.6 - 1.2; P.push(part(GEO.dode, CC[k % 4], [x, H(x, z) + .7, z], [k, k * 2, 0], [.8, 1.3, .7])); }
+  for (let k = 0; k < 7; k++) { const a = -Math.PI * (.1 + k * .13), x = -34 + Math.cos(a) * 3.2, z = 64 + Math.sin(a) * 3.2; P.push(part(GEO.cone6, CC[(k + 1) % 4], [x, H(x, z) + .9, z], [0, k, 0], [.5, 1.8, .5])); }
+  for (let i = 0; i < 40; i++) { const x = -46 + (rng() * 2 - 1) * 24, z = 44 + (rng() * 2 - 1) * 24, h = H(x, z); if (h < -2.5 || h > -.6 || !clearAt(x, z, .5)) continue; for (let t = 0; t < 3; t++) P.push(part(GEO.cone4, 0x3e6b4a, [x + t * .2, h + 1, z + t * .15], [rng() * .2, t, rng() * .2], [.06, 2 + rng(), .06])); }
+  R.scene.add(meshOf(P));
+}
+function buildAbbey() {
   // Drowned Abbey: nave walls 16x28 at (28,72), door north (28,58), bell tower (24,82)
   const AW = [], ax = 28, az = 72, y = H(ax, az);
-  const seg = (x1, z1, x2, z2, gap) => { const L = Math.hypot(x2 - x1, z2 - z1), a = Math.atan2(x2 - x1, z2 - z1); AW.push(part(GEO.box, 0x6b7780, [(x1 + x2) / 2 - ax, 3, (z1 + z2) / 2 - az], [0, a, 0], [.8, 6, L])); if (!gap) addCollider({ x1, z1, x2, z2, r: .45 }); };
+  const seg = (x1, z1, x2, z2, gap) => { const L = Math.hypot(x2 - x1, z2 - z1), a = Math.atan2(x2 - x1, z2 - z1); AW.push(part(GEO.box, 0x6b7780, [(x1 + x2) / 2 - ax, 3, (z1 + z2) / 2 - az], [0, a, 0], [.8, 6, L])); AW.push(part(GEO.box, 0x5b6770, [(x1 + x2) / 2 - ax, 6.1, (z1 + z2) / 2 - az], [0, a, 0], [1.1, .3, L + .3])); AW.push(part(GEO.box, 0x4f6a5a, [(x1 + x2) / 2 - ax, .5, (z1 + z2) / 2 - az], [0, a, 0], [.9, 1, L])); if (!gap) addCollider({ x1, z1, x2, z2, r: .45 }); };
   seg(20, 58, 26.5, 58); seg(29.5, 58, 36, 58); seg(20, 86, 36, 86); seg(20, 58, 20, 70); seg(20, 73, 20, 86); seg(36, 58, 36, 66); seg(36, 69, 36, 86);
-  for (let i = 0; i < 5; i++) AW.push(part(GEO.cyl8, 0x5b6770, [-8 + (i % 2) * 16 - 0, 3.5, -12 + i * 6], 0, [.5, 7, .5]));
+  for (let i = 0; i < 5; i++) for (const sx of [-1, 1]) AW.push(part(GEO.box, 0x5b6770, [sx * 8.3, 3.2, -12 + i * 6], 0, [.9, 6.4, .9]));     // buttresses
+  // broken roof beams and the gable: a separate occluder that fades out while Oda is in or at the nave
+  const RF = [];
+  for (let i = 0; i < 5; i++) RF.push(part(GEO.box, 0x4a545c, [0, 6.6, -11 + i * 5.5], [0, 0, (i % 2 ? .05 : -.04)], [17, .35, .5]));
+  RF.push(part(GEO.cone4, 0x5b6770, [0, 9.5, -14], [0, Math.PI / 4, 0], [3.4, 3, .9]));
+  const rf = new THREE.Mesh(merge(RF), new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: .85, transparent: true, opacity: 1 }));
+  rf.castShadow = true; rf.position.set(ax, y, az); R.scene.add(rf); OCC.push({ m: rf, x: ax, z: 70, r: 17, min: 0 });
+  AW.push(part(GEO.box, 0x5b6770, [0, .6, 12.6], 0, [3.6, 1.2, 1.2]), part(GEO.box, 0x7a848a, [0, 1.25, 12.6], 0, [3.8, .15, 1.4]));              // altar
   const am = meshOf(AW); am.position.set(ax, y, az); R.scene.add(am);
-  const door = meshOf([part(GEO.box, 0x5a4535, [0, 1.8, 0], 0, [3, 3.6, .3])]); door.position.set(28, H(28, 58), 58); R.scene.add(door); R.abbeyDoor = door;
-  addCollider({ x1: 26.5, z1: 58, x2: 29.5, z2: 58, r: .4, on: () => !G.S.flags.abbeyDoor });
-  const tw = meshOf([part(GEO.box, 0x6b7780, [0, 7, 0], 0, [3.4, 14, 3.4]), part(GEO.cone4, 0x3e4a52, [0, 15.5, 0], [0, Math.PI / 4, 0], [2.8, 3, 2.8]), part(GEO.box, 0x2a2f36, [0, 11, 1.71], 0, [1.2, 2, .05])]);
+  addCollider({ x: 28, z: 84.6, r: 1.3 });
+  // window gaps close while the Verger fights
+  const inVerger = () => G.arena && G.arena.boss === 'B2';
+  addCollider({ x1: 20, z1: 70, x2: 20, z2: 73, r: .45, on: inVerger }); addCollider({ x1: 36, z1: 66, x2: 36, z2: 69, r: .45, on: inVerger });
+  // hinged door (swings in when the bell opens it)
+  const dg = new THREE.Group(); dg.position.set(26.5, H(28, 58), 58); R.scene.add(dg);
+  const door = meshOf([part(GEO.box, 0x5a4535, [1.5, 1.8, 0], 0, [3, 3.6, .3]), part(GEO.box, 0x3a2a20, [1.5, 1.2, .18], 0, [2.6, .12, .06]), part(GEO.box, 0x3a2a20, [1.5, 2.6, .18], 0, [2.6, .12, .06]), part(GEO.box, PAL.brass, [2.5, 1.8, .2], 0, [.15, .15, .08])]);
+  dg.add(door); R.abbeyDoor = dg;
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(.5, .06, 4, 16), mat(PAL.brass, { basic: 1, op: .7 })); ring.position.set(28, H(28, 58) + 4.3, 57.5); R.scene.add(ring); R.doorSigil = ring;
+  addCollider({ x1: 26.5, z1: 58, x2: 29.5, z2: 58, r: .4, on: () => !G.S.flags.abbeyDoor || inVerger() });
+  // hour pillars (they light one by one as the Verger chants)
+  R.hourPillars = HOUR_PILLARS.map(([x, z]) => {
+    const g = new THREE.Group(); g.add(meshOf([part(GEO.cyl8, 0x6b7780, [0, 2.5, 0], 0, [.45, 5, .45]), part(GEO.cyl8, 0x5b6770, [0, .2, 0], 0, [.7, .4, .7]), part(GEO.cyl8, 0x5b6770, [0, 5.1, 0], 0, [.6, .25, .6])]));
+    const m = new THREE.MeshStandardMaterial({ color: PAL.brass, metalness: .6, roughness: .35, emissive: PAL.brass, emissiveIntensity: 0 });
+    for (const yy of [1.4, 2.6, 3.8]) { const r = new THREE.Mesh(new THREE.TorusGeometry(.5, .07, 4, 12), m); r.rotation.x = Math.PI / 2; r.position.y = yy; g.add(r); }
+    g.position.set(x, H(x, z), z); R.scene.add(g); addCollider({ x, z, r: .6 }); return { g, m };
+  });
+  const tw = meshOf([part(GEO.box, 0x6b7780, [0, 7, 0], 0, [3.4, 14, 3.4]), part(GEO.cone4, 0x3e4a52, [0, 15.5, 0], [0, Math.PI / 4, 0], [2.8, 3, 2.8]), part(GEO.box, 0x2a2f36, [0, 11, 1.71], 0, [1.2, 2, .05]), part(GEO.box, 0x2a2f36, [1.71, 11, 0], 0, [.05, 2, 1.2])]);
   tw.position.set(24, H(24, 82), 82); R.scene.add(tw); addCollider({ x: 24, z: 82, r: 2.4 });
   for (let i = 0; i < 8; i++) { const gx = 12 + (i % 4) * 2.4, gz = 62 + Math.floor(i / 4) * 2.6; const s = meshOf([part(GEO.box, 0x8a949a, [0, .4, 0], [0, 0, (i % 3 - 1) * .1], [.7, .9, .15])]); s.position.set(gx, H(gx, gz), gz); R.scene.add(s); }
-  // Bell Spire: slate pillar, arch and the Great Bell
-  const sp = meshOf([part(frustum(2.5, 5, 20, 8), PAL.slate, [0, 10, 0])]); sp.position.set(-6, H(-6, 124), 124); R.scene.add(sp); addCollider({ x: -6, z: 124, r: 5 });
-  const ar = meshOf([part(GEO.box, 0x7a848a, [-3.5, 3.5, 0], 0, [1.2, 7, 1.2]), part(GEO.box, 0x7a848a, [3.5, 3.5, 0], 0, [1.2, 7, 1.2]), part(GEO.box, 0x7a848a, [0, 7.4, 0], 0, [8.4, 1, 1.4])]);
+  // Brother Calder's rowboat (it floats at high tide)
+  const boat = meshOf([part(GEO.box, 0x6b5240, [0, .2, 0], 0, [1.3, .4, 3]), part(GEO.cone4, 0x6b5240, [0, .2, 1.8], [Math.PI / 2, Math.PI / 4, 0], [.92, .7, .3]), part(GEO.box, 0x8a6e55, [0, .42, -.5], 0, [1.2, .06, .4]), part(GEO.cyl6, PAL.drift, [.7, .6, .6], [0, 0, -.6], [.04, 2.2, .04])]);
+  R.scene.add(boat); R.calderBoat = boat; KEEP.push([14, 56, 3]);
+  KEEP.push([28, 72, 12], [24, 82, 3]);
+}
+function buildCauseway() {
+  // Saint's Causeway: old flagstones, leaning way-posts and a weathered saint at the foot of the ramp
+  const P = [], rng = mulberry32(31);
+  const pts = []; for (let t = 0; t <= 1; t += .07) pts.push([lerp(14, 20, t), lerp(62, 90, t)]); for (let t = 0; t <= 1; t += .12) pts.push([lerp(20, 10, t), lerp(90, 95, t)]);
+  for (const [x, z] of pts) { const h = H(x, z); for (let k = 0; k < 2; k++) P.push(part(GEO.box, k ? 0x7a848a : 0x6b7780, [x + (rng() - .5) * 2, h + .03, z + (rng() - .5) * 1.4], [0, rng() * 3, 0], [.9 + rng() * .5, .1, .7 + rng() * .4])); }
+  for (let i = 0; i < 9; i++) { const t = i / 8, x = lerp(14, 20, t) + (i % 2 ? 3 : -3), z = lerp(62, 90, t), h = H(x, z); if (h < -2.6) continue; P.push(part(GEO.cyl6, 0x5b6770, [x, h + 1, z], [(rng() - .5) * .3, 0, (rng() - .5) * .3], [.22, 2, .22]), part(GEO.box, 0x3e6b4a, [x, h + 1.6, z + .2], 0, [.05, .9, .05])); addCollider({ x, z, r: .3 }); }
+  const sx = 7, sz = 99.5, sh = H(sx, sz);
+  P.push(part(GEO.cyl8, 0x6b7780, [sx, sh + .3, sz], 0, [.7, .6, .7]), part(GEO.cone8, 0x7a848a, [sx, sh + 1.5, sz], 0, [.5, 2, .5]), part(GEO.sph7, 0x7a848a, [sx, sh + 2.7, sz], 0, [.28, .3, .28]), part(new THREE.TorusGeometry(.35, .05, 4, 10), PAL.brass, [sx, sh + 3.1, sz], [Math.PI / 2, 0, 0]));
+  addCollider({ x: sx, z: sz, r: .7 });
+  R.scene.add(meshOf(P)); KEEP.push([sx, sz, 1.5]);
+}
+function buildSpire() {
+  // Bell Spire: slate pillar, rocks round the plaza, arch and the Great Bell
+  // the Spire rock stands north-west of the plaza, behind it as the camera looks north
+  const sp = meshOf([part(frustum(2.5, 5, 20, 8), PAL.slate, [0, 10, 0]), part(frustum(1.2, 2.5, 6, 8), 0x4a545c, [0, 23, 0]), part(GEO.dode, 0x4a545c, [3, 1, 2], 0, [3, 2.4, 3])]); sp.position.set(-21, -5, 94); R.scene.add(sp);
+  const P = [];
+  for (let k = 0; k < 18; k++) { const a = k / 18 * TAU + .1, r = 15.5 + (k % 3) * .6, x = -6 + Math.cos(a) * r, z = 110 + Math.sin(a) * r; if (dist(x, z, 4, 98) < 5) continue; P.push(part(GEO.dode, k % 2 ? 0x5b6770 : 0x4a545c, [x, H(x, z) + .3, z], [k, k * 2, 0], [1.6, 1.4, 1.5])); }
+  R.scene.add(meshOf(P));
+  const ar = meshOf([part(GEO.box, 0x7a848a, [-3.5, 3.5, 0], 0, [1.2, 7, 1.2]), part(GEO.box, 0x7a848a, [3.5, 3.5, 0], 0, [1.2, 7, 1.2]), part(GEO.box, 0x7a848a, [0, 7.4, 0], 0, [8.4, 1, 1.4]), part(GEO.box, 0x5b6770, [-3.5, .3, 0], 0, [1.6, .6, 1.6]), part(GEO.box, 0x5b6770, [3.5, .3, 0], 0, [1.6, .6, 1.6]), part(GEO.cyl6, 0x2a2f36, [0, 6.6, 0], 0, [.05, 1.2, .05])]);
+  ar.material = new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: .82, transparent: true, opacity: 1 });
   ar.position.set(-6, H(-6, 110), 110); R.scene.add(ar); addCollider({ x: -9.5, z: 110, r: .9 }); addCollider({ x: -2.5, z: 110, r: .9 });
-  const gb = new THREE.Mesh(frustum(.8, 2, 3, 10), brassMat()); gb.position.set(-6, H(-6, 110) + 5, 110); R.scene.add(gb);
-  const crack = meshOf([part(GEO.box, 0x2a2018, [.6, 0, 1.45], [0, 0, .3], [.08, 2.4, .05])]); crack.position.copy(gb.position); R.scene.add(crack);
+  const bg = new THREE.Group(); bg.position.set(-6, H(-6, 110) + 6.2, 110); R.scene.add(bg);
+  const bm = new THREE.MeshStandardMaterial({ color: PAL.brass, metalness: .6, roughness: .35, flatShading: true, transparent: true, opacity: 1 });
+  const gb = new THREE.Mesh(frustum(.8, 2, 3, 10).translate(0, -1.5, 0), bm); gb.castShadow = true; bg.add(gb);
+  const lip = new THREE.Mesh(new THREE.TorusGeometry(2, .12, 4, 16), bm); lip.rotation.x = Math.PI / 2; lip.position.y = -3; bg.add(lip);
+  const crack = meshOf([part(GEO.box, 0x2a2018, [.6, -1.6, 1.45], [0, 0, .3], [.08, 2.4, .05])]); bg.add(crack); R.bellCrack = crack;
+  const glow = halo(PAL.foam, 2.6, 0); glow.position.y = -1.5; bg.add(glow);
+  R.greatBell = { g: bg, glow, swing: 0, fade: [ar.material, bm], casters: [ar, gb, lip] };
   const hush = new THREE.Mesh(new THREE.CylinderGeometry(11, 11, 5, 40, 1, true), new THREE.MeshBasicMaterial({ color: PAL.foam, transparent: true, opacity: .14, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending }));
   hush.position.set(-6, H(-6, 110) + 2.5, 110); R.scene.add(hush); R.hush = hush;
-  addCollider({ x1: -6, z1: 99, x2: -6, z2: 99, r: .01 });
-  for (let k = 0; k < 28; k++) { const a = k / 28 * TAU; const x1 = -6 + Math.cos(a) * 11, z1 = 110 + Math.sin(a) * 11, a2 = (k + 1) / 28 * TAU; addCollider({ x1, z1, x2: -6 + Math.cos(a2) * 11, z2: 110 + Math.sin(a2) * 11, r: .3, on: () => !G.S.flags.won && !G.S.keyItems.includes('tongue') }); }
-  KEEP.push([28, 72, 12], [-6, 110, 12], [24, 82, 3]);
+  const inUndertoll = () => G.arena && G.arena.boss === 'B3';
+  for (let k = 0; k < 28; k++) { const a = k / 28 * TAU; const x1 = -6 + Math.cos(a) * 11, z1 = 110 + Math.sin(a) * 11, a2 = (k + 1) / 28 * TAU; addCollider({ x1, z1, x2: -6 + Math.cos(a2) * 11, z2: 110 + Math.sin(a2) * 11, r: .3, on: () => inUndertoll() || !G.S.flags.won && !G.S.keyItems.includes('tongue') }); }
+  W.inter.push({ id: 'greatbell', kind: 'bell', x: -6, z: 110, r: 3.4, label: () => 'Ring', can: () => G.S.flags.bosses.B3 && !G.S.flags.won && !G.cine, act: () => startWinSequence() });
+  KEEP.push([-6, 110, 12]);
 }
 function buildWorld() {
   buildBrackwick(); buildGullstair(); buildReach(); buildMirewood(); buildSouth();
   for (const bp of BELLPOSTS) { const m = bellPostMesh(bp); W.bellposts[bp.id] = Object.assign({ m }, bp); W.inter.push({ id: bp.id, kind: 'bp', x: bp.x, z: bp.z, r: 2.2, label: () => 'Rest', act: () => restAt(bp) }); }
   for (const p of POSTS) W.posts.push(Object.assign({ m: grapplePostMesh(p) }, p));
-  for (const c of CHESTS) { const m = chestMesh(c); W.chests[c.id] = { def: c, m }; W.inter.push({ id: c.id, kind: 'chest', x: c.x, z: c.z, r: 1.9, label: () => 'Open', can: () => !G.S.flags.chests.includes(c.id) && tideOk(c.tide, true), act: () => openChest(c.id) }); }
+  for (const c of CHESTS) { const m = chestMesh(c); W.chests[c.id] = { def: c, m }; W.inter.push({ id: c.id, kind: 'chest', x: c.x, z: c.z, r: 1.9, label: () => 'Open', can: () => !G.S.flags.chests.includes(c.id) && tideOk(c.tide, true) && (!c.after || G.S.flags.bosses[c.after]), act: () => openChest(c.id) }); }
   for (const c of CHIMES) W.chimes.push({ def: c, m: chimeMesh(c) });
   for (const id in NPCS) {
     const n = NPCS[id], m = buildNPC(n.look); const y = H(n.x, n.z);
@@ -2772,7 +3020,7 @@ function useSluice(k) {
   if (k === 'B' && G.tideTarget !== 0) { Dlg.start(DLG.sluiceB_high); return; }
   if (k === 'C' && !S.flags.warden) { Dlg.start([['', 'Something heavy and mossy is sitting on this stone. It does not want to move.']]); return; }
   S.flags.sluice[k] = true; AU.sfx('clang'); toast('Sluice stone ' + k + ' turned', 'brass', 2);
-  if (S.flags.sluice.A && S.flags.sluice.B && S.flags.sluice.C) { S.flags.gateOpen = true; toast('The sluice gate rises', 'brass', 3); }
+  if (S.flags.sluice.A && S.flags.sluice.B && S.flags.sluice.C) { S.flags.gateOpen = true; toast('The sluice gate rises', 'brass', 3); questEvent('gate'); }
   questUpdate();
 }
 function worldUpdate(dt) {
@@ -2808,8 +3056,14 @@ function worldUpdate(dt) {
   // sunk rocks
   for (const r of W.ringRocks) { if (r.north && S.flags.bosses.B1) r.sunk = true; r.m.position.y = lerp(r.m.position.y, r.sunk ? r.y0 - 6 : r.y0, 1 - Math.exp(-dt)); }
   if (R.sluiceDoor) R.sluiceDoor.position.y = lerp(R.sluiceDoor.position.y, H(69, -20) - (S.flags.gateOpen ? 3.2 : 0), 1 - Math.exp(-dt));
-  if (R.abbeyDoor) R.abbeyDoor.visible = !S.flags.abbeyDoor;
-  if (R.hush) { R.hush.visible = !S.keyItems.includes('tongue') && !S.flags.won; R.hush.material.opacity = .1 + .05 * Math.sin(t * 2); }
+  if (R.abbeyDoor) { const shut = !S.flags.abbeyDoor || (G.arena && G.arena.boss === 'B2'); R.abbeyDoor.rotation.y = lerp(R.abbeyDoor.rotation.y, shut ? 0 : -1.75, 1 - Math.exp(-2 * dt)); }
+  if (R.doorSigil) { R.doorSigil.visible = !S.flags.abbeyDoor; R.doorSigil.material.opacity = .35 + .3 * Math.sin(t * 3); R.doorSigil.rotation.z += dt; }
+  if (R.hourPillars) { const lit = G.boss && G.boss.boss === 'B2' ? G.boss.hours || 0 : 0; R.hourPillars.forEach((p, i) => { p.m.emissiveIntensity = lerp(p.m.emissiveIntensity, i < lit ? 1.4 + .4 * Math.sin(t * 6) : 0, 1 - Math.exp(-4 * dt)); }); }
+  if (R.calderBoat) { const by = Math.max(H(14, 56) + .05, G.waterY - .15) + Math.sin(t * 1.3) * .04; R.calderBoat.position.set(14, by, 56); R.calderBoat.rotation.set(Math.sin(t * .9) * .03, .3, Math.sin(t * 1.1) * .04); const c = W.npcs.calder; if (c) c.y = by + .45; }
+  if (R.hush) { const show = !S.keyItems.includes('tongue') && !S.flags.won || (G.arena && G.arena.boss === 'B3'); R.hush.visible = show; R.hush.material.opacity = (G.arena ? .2 : .1) + .05 * Math.sin(t * 2); }
+  if (R.greatBell) { const gb = R.greatBell; gb.swing = Math.max(0, gb.swing - dt * .15); gb.g.rotation.z = Math.sin(t * 2.2) * .35 * gb.swing; gb.glow.material.opacity = S.flags.bosses.B3 && !S.flags.won ? .12 + .08 * Math.sin(t * 3) : S.flags.won ? .06 : 0; R.bellCrack.visible = !S.flags.won;
+    // the arch and bell fade out while they stand between the camera and Oda
+    const hide = h.z < 111.5 && h.z > 94 && Math.abs(h.x + 6) < 7.5 && G.state !== 'win'; for (const m of gb.fade) { m.opacity = lerp(m.opacity, hide ? .12 : 1, 1 - Math.exp(-8 * Math.max(dt, .02))); m.depthWrite = m.opacity > .9; } for (const c of gb.casters) c.castShadow = !hide; }
   // lights at night
   const night = R.isNight ? 1 : 0;
   for (const l of LANTERNS) l.m.emissiveIntensity = lerp(l.m.emissiveIntensity, night * 2.2, 1 - Math.exp(-dt));
@@ -2820,8 +3074,10 @@ function worldUpdate(dt) {
   if (R.forgeGlow) R.forgeGlow.material.color.setHSL(.11, .7, .45 + .1 * Math.sin(t * 7));
   // occluders (roofs) fade when the hero is beneath
   if (Math.floor(t * 10) !== Math.floor((t - dt) * 10)) for (const o of OCC) { o.under = dist2(h.x, h.z, o.x, o.z) < o.r * o.r; }
-  for (const o of OCC) { const target = o.under ? .25 : 1; o.m.material.opacity = lerp(o.m.material.opacity, target, 1 - Math.exp(-dt / .07)); o.m.material.depthWrite = o.m.material.opacity > .9; }
+  for (const o of OCC) { const target = o.under ? (o.min ?? .25) : 1; o.m.material.opacity = lerp(o.m.material.opacity, target, 1 - Math.exp(-Math.max(dt, .02) / .07)); o.m.material.depthWrite = o.m.material.opacity > .9; o.m.visible = o.m.material.opacity > .03; }
   if (S.flags.gateOpen && !S.keyItems.includes('midNote') && !G.midNoteSpawned) { G.midNoteSpawned = true; spawnPickup('key', 81, -21, 1, 'midNote'); }
+  // a boss's Note is never lost: if it was not picked up (quit, death), it waits in the arena
+  for (const [b, k, x, z] of [['B1', 'lowNote', 12, 26], ['B2', 'highNote', 28, 73]]) if (S.flags.bosses[b] && !S.keyItems.includes(k) && !G.pickups.some(p => p.extra === k) && dist(h.x, h.z, x, z) < 40) spawnPickup('key', x, z, 1, k);
   arenaUpdate(dt);
   // ambience: surf by water nearness
   if (Math.floor(t * 2) !== Math.floor((t - dt) * 2)) {
@@ -2830,26 +3086,29 @@ function worldUpdate(dt) {
   }
 }
 
-/* ---------- boss arena ---------- */
+/* ---------- boss arenas ---------- */
 function arenaUpdate(dt) {
   const S = G.S, h = HERO;
   if (!S.flags.bosses.B1) {
     const d = dist(h.x, h.z, 12, 24);
     if (!G.boss && d < 50) spawnGristlemaw();
-    if (G.boss && !G.arena && d > 70) { R.scene.remove(G.boss.md.g); G.enemies.splice(G.enemies.indexOf(G.boss), 1); G.boss = null; }
-    if (G.boss && !G.arena && d < 13 && h.st !== 'pull' && h.st !== 'dead') startArena(G.boss);
+    if (G.boss && G.boss.boss === 'B1' && !G.arena && d > 70) { G.boss.cleanup(); G.enemies.splice(G.enemies.indexOf(G.boss), 1); G.boss = null; }
+    if (G.boss && G.boss.boss === 'B1' && !G.arena && d < 13 && h.st !== 'pull' && h.st !== 'dead') startArena(G.boss);
   }
-  if (R.arenaWall) { R.arenaWall.visible = !!G.arena; R.arenaWall.position.y = G.waterY + 1; R.arenaWall.material.opacity = .14 + .05 * Math.sin(G.time * 3); }
-  if (G.arena) { R.bossLight.position.set(G.arena.x, 3, G.arena.z); R.bossLight.intensity = 6; } else R.bossLight.intensity = 0;
+  vergerArena(dt); undertollArena(dt);
+  if (R.arenaWall) { R.arenaWall.visible = !!G.arena && G.arena.boss === 'B1'; R.arenaWall.position.y = G.waterY + 1; R.arenaWall.material.opacity = .14 + .05 * Math.sin(G.time * 3); }
+  if (G.arena) { R.bossLight.position.set(G.arena.x, G.arena.y + 3, G.arena.z); R.bossLight.intensity = 6; } else R.bossLight.intensity = 0;
 }
 function startArena(b) {
-  G.arena = b; b.st = 'chase'; b.atkT = 2.5; AU.play('boss'); AU.sfx('roar'); UI.bossBar(b); shake(.4);
-  toast('Gristlemaw rises! Its shell shrugs off blows at high tide.', 'warn', 3);
+  G.arena = b; R.cam.abias = R.cam.adist = 0; b.st = 'chase'; b.atkT = 2.5; AU.play('boss'); AU.sfx('roar'); UI.bossBar(b); shake(.4);
+  // boss intro framing: a short look at the boss before the fight
+  if (!G.cine) G.cine = { t: 0, dur: 2.4, x: b.x, z: b.z, y: (b.y || 0) + 1, dist: 14, intro: 1 };
+  toast(b.intro || 'Gristlemaw rises! Its shell shrugs off blows at high tide.', 'warn', 3);
 }
-function endArena(won) { G.arena = null; UI.bossBar(null); if (G.zone) AU.play(G.zone.music); }
+function endArena(won) { G.arena = null; UI.bossBar(null); if (G.zone) { AU.songName = null; AU.play(G.zone.music); Object.assign(R.weatherTarget, { fog: 1, sun: 1, wind: .5, rain: 0, tint: 0, leaves: 0 }, G.zone.weather); } }
 function resetBoss() {
-  if (G.boss) { R.scene.remove(G.boss.md.g); const i = G.enemies.indexOf(G.boss); if (i >= 0) G.enemies.splice(i, 1); freeBossDecals(G.boss); }
-  G.boss = null; G.arena = null; UI.bossBar(null);
+  if (G.boss) { G.boss.cleanup(); const i = G.enemies.indexOf(G.boss); if (i >= 0) G.enemies.splice(i, 1); }
+  G.boss = null; G.arena = null; G.hush = 0; UI.bossBar(null);
 }
 
 /* ---------- reachability report (debug, design task 17) ---------- */
@@ -2865,8 +3124,8 @@ function reachReport() {
     return seen;
   };
   // grapple links: from any cell within 9 m of a post to the post landing
-  const links = {}, pairs = [['P1a', 'P1b'], ['P1b', 'P1a'], ['P2a', 'P2b'], ['P2b', 'P2a'], ['P3', 'P3']];
-  for (const [fromId, toId] of pairs) {
+  const links = {};
+  for (const [fromId, toId] of POST_LINKS) {
     const from = POSTS.find(p => p.id === fromId), to = POSTS.find(p => p.id === toId);
     const land = to.land || [to.x, to.z], lk = cellIdx(land[0], land[1]);
     for (let dz = -9; dz <= 9; dz++) for (let dx = -9; dx <= 9; dx++) { const k = cellIdx(from.x + dx, from.z + dz); if (k >= 0) (links[k] = links[k] || []).push(lk); }
@@ -2885,10 +3144,500 @@ function reachReport() {
   for (const c of CHESTS) chk('chest', c.id, c.x, c.z, c.tide);
   for (const id in NPCS) chk('npc', id, NPCS[id].x, NPCS[id].z);
   for (const c of CHIMES) chk('chime', c.id, c.x, c.z, c.tide);
+  for (const p of POSTS) chk('post', p.id, p.x, p.z);
+  chk('bell', 'greatbell', GREAT_BELL.x, GREAT_BELL.z - 2);
   const bad = out.filter(o => !o.ok);
   console.log('[SB.reach] ' + (out.length - bad.length) + '/' + out.length + ' reachable' + (bad.length ? '; unreachable: ' + bad.map(b => b.kind + ':' + b.id).join(', ') : ''));
   return { ok: !bad.length, bad, all: out };
 }
+
+/* ===== bosses.js ===== */
+/* =====================================================================
+   SALTBELL :: bosses.js  (design 7, B2 and B3; design 15, the win)
+   The Verger of Low Hours (Abbey nave), the Undertoll (Bell Spire) with
+   its Bronze Knots and the Hush, the forge scene that makes the
+   Bell-Tongue, and the win sequence with credits.
+   Bosses follow the Gristlemaw pattern: an entity with boss, bossMod,
+   update, onDeath, cleanup, plus a delayed-hit list for timed telegraphs.
+   ===================================================================== */
+
+/* ---------- shared: delayed telegraphs (decal grows, then the hit resolves) ---------- */
+function later(e, decalObj, dur, fn) { (e.later = e.later || []).push({ d: decalObj, t: 0, dur, fn }); }
+function laterUpdate(e, dt) {
+  if (!e.later) return;
+  for (let i = e.later.length - 1; i >= 0; i--) {
+    const L = e.later[i]; L.t += dt; if (L.d) L.d.set('uFill', clamp(L.t / L.dur, 0, 1));
+    if (L.t >= L.dur) { if (L.d) L.d.free(); e.later.splice(i, 1); if (G.state === 'play' || G.state === 'dead') L.fn(); }
+  }
+}
+function laterClear(e) { if (e.later) e.later.forEach(L => L.d && L.d.free()); e.later = []; }
+function bossMat(e) { return e.md.mat; }
+function bossFlash(e, extra) {
+  const m = bossMat(e), em = m.emissive;
+  if (e.flash > 0) { em.setRGB(1, 1, 1); m.emissiveIntensity = .7; }
+  else if (e.st === 'windup' || e.st === 'channel' || extra) { em.set(PAL.coral); m.emissiveIntensity = Math.floor(G.time / .15) % 2 ? .5 : 0; }
+  else if (e.st === 'stun' || e.st === 'collapse') { em.set(PAL.foam); m.emissiveIntensity = .3 + .15 * Math.sin(G.time * 8); }
+  else m.emissiveIntensity = 0;
+}
+
+/* =====================================================================
+   B2: THE VERGER OF LOW HOURS
+   ===================================================================== */
+function buildVerger() {
+  const g = new THREE.Group(), m = VC.clone();
+  const sub = (P, parent) => { const o = new THREE.Mesh(merge(P), m); o.castShadow = true; (parent || g).add(o); return o; };
+  const body = new THREE.Group(); g.add(body);
+  const P = [part(GEO.cone8, 0x3a4a52, [0, 1.55, 0], 0, [1.05, 3.1, .95]), part(GEO.cone8, 0x2f3d45, [0, 1.0, -.05], [0, .4, 0], [1.35, 2.0, 1.25]),
+    part(GEO.sph7, 0x3a4a52, [0, 2.95, 0], 0, [.85, .42, .62]),
+    part(GEO.cone6, 0x26323a, [0, 3.75, -.05], 0, [.58, 1.5, .58]), part(GEO.sph, 0x05080a, [0, 3.38, .26], 0, [.3, .36, .2])];
+  for (let k = 0; k < 9; k++) { const a = k / 9 * TAU; P.push(part(GEO.box, k % 2 ? 0x3e6b4a : 0x4f7a50, [Math.sin(a) * .62, 1.7 - (k % 3) * .3, Math.cos(a) * .55], [0, a, (k % 2 ? .08 : -.08)], [.07, 1.7 + (k % 3) * .4, .03])); }
+  P.push(part(GEO.box, 0xd9b45a, [0, 2.75, .52], 0, [.5, .08, .05]));   // brass clasp
+  sub(P, body);
+  const eyes = new THREE.Group(); body.add(eyes);
+  for (const sx of [-1, 1]) { const e = new THREE.Mesh(GEO.sph, mat(0x8fe3cf, { basic: 1 })); e.scale.setScalar(.065); e.position.set(sx * .12, 3.42, .42); eyes.add(e); }
+  // staff arm (right): a crooked staff
+  const staffArm = new THREE.Group(); staffArm.position.set(.75, 2.8, .1); body.add(staffArm);
+  sub([part(GEO.cyl6, 0x3a4a52, [0, -.45, 0], 0, [.16, .9, .16]), part(GEO.cyl6, 0x5a4535, [0, -.6, .25], 0, [.06, 3.8, .06]), part(GEO.cyl6, 0x5a4535, [0, 1.35, .45], [.7, 0, 0], [.055, .7, .055]), part(GEO.cyl6, 0x5a4535, [0, 1.5, .8], [1.9, 0, 0], [.05, .5, .05])], staffArm);
+  // censer arm (left): chain of 6 links and a bronze censer-bell
+  const censerArm = new THREE.Group(); censerArm.position.set(-.8, 2.8, .1); body.add(censerArm);
+  sub([part(GEO.cyl6, 0x3a4a52, [0, -.45, 0], 0, [.16, .9, .16])], censerArm);
+  const censer = new THREE.Group(); censer.position.set(0, -.9, .1); censerArm.add(censer);
+  for (let i = 0; i < 6; i++) { const l = new THREE.Mesh(new THREE.TorusGeometry(.07, .02, 4, 8), brassMat()); l.position.y = -i * .14; l.rotation.y = i % 2 ? Math.PI / 2 : 0; censer.add(l); }
+  const cb = new THREE.Mesh(frustum(.14, .32, .42, 8), brassMat()); cb.position.y = -1.0; censer.add(cb);
+  const smoke = halo(0x8fe3cf, .45, .18); smoke.position.y = -1.2; censer.add(smoke);
+  g.scale.setScalar(1.05);
+  return { g, body, staffArm, censerArm, censer, eyes, mat: m };
+}
+function spawnVerger() {
+  const B = BOSSES.B2, md = buildVerger(); R.scene.add(md.g);
+  const e = {
+    id: EID++, boss: 'B2', type: 'verger', D: { name: B.name, heavy: true, dmg: 0, spd: 2.2 }, x: B.x, z: B.z, y: 0, a: Math.PI, home: { x: B.x, z: B.z },
+    rect: [B.rect[0] + 1.2, B.rect[1] + 1.5, B.rect[2] - 1.2, B.rect[3] - 1.5], max: B.hp, hp: B.hp, size: 2.2, st: 'dormant', t: 0,
+    model: { g: md.g, mat: md.mat, parts: {} }, md, flash: 0, atkT: 2, phase: 1, hours: 0, chantT: 2, bellT: 6, dmgY: 4.6, xp: B.xp, hits: [], camDist: 18,
+    intro: 'The Verger of Low Hours wakes. When he chants, ring the bell close to him!',
+  };
+  e.bossMod = d => e.stunned > 0 ? d * 1.5 : d;
+  e.update = dt => vergerUpdate(e, dt);
+  e.onDeath = () => vergerDeath(e);
+  e.onInterrupt = () => { e.st = 'stun'; e.t = 0; e.stunned = 4; toast('Chant broken! The Verger reels (x1.5 damage)', 'brass', 2); AU.sfx('clang'); burst(e.x, 3.5, e.z, 30, PAL.brass, 5, .7); };
+  e.cleanup = () => { R.scene.remove(md.g); freeBossDecals(e); laterClear(e); };
+  G.enemies.push(e); G.boss = e; return e;
+}
+function vergerArena() {
+  const S = G.S; if (S.flags.bosses.B2 || !S.flags.abbeyDoor) return;
+  const h = HERO, d = dist(h.x, h.z, 28, 72);
+  if (!G.boss && d < 42) spawnVerger();
+  const b = G.boss; if (!b || b.boss !== 'B2') return;
+  if (!G.arena && d > 62) { b.cleanup(); G.enemies.splice(G.enemies.indexOf(b), 1); G.boss = null; return; }
+  const inside = h.x > 21 && h.x < 35 && h.z > 63 && h.z < 85;
+  if (!G.arena && inside && S.flags.gq4Done && h.st !== 'pull' && h.st !== 'dead') startArena(b);
+}
+function vergerAttack(e, kind) {
+  const h = HERO, a = angTo(e.x, e.z, h.x, h.z);
+  e.a = a; e.st = 'windup'; e.t = 0; e.kind = kind; e.decals = [];
+  if (kind === 'censer') {
+    e.windDur = .8; e.decals.push(decal('circle', e.x, e.z, 0, { r: 5 }));
+    if (e.phase === 3) later(e, decal('ring', e.x, e.z, 0, { r: 7, inner: 4.6 / 7, op: .85 }), 1.3, () => { const d = dist(h.x, h.z, e.x, e.z); if (d <= 7.4 && d >= 4.2) hurtHero(40, e.x, e.z, 3); burst(e.x, e.y + 1, e.z, 24, PAL.brass, 6, .5); shake(.3); });
+  }
+  if (kind === 'toll') { e.windDur = .6; e.tx = e.x + Math.sin(a) * 1.6; e.tz = e.z + Math.cos(a) * 1.6; e.decals.push(decal('circle', e.tx, e.tz, 0, { r: 3 })); }
+  if (kind === 'lash') { e.windDur = .7; e.decals.push(decal('line', e.x, e.z, a, { len: 9, w: 1.2 })); }
+  if (kind === 'chant') {
+    e.st = 'channel'; e.channel = true; e.channelDmg = 0; e.windDur = 4;
+    e.decals.push(decal('circle', e.x, e.z, 0, { r: 6, color: PAL.coral, op: .55 }));
+    toast('The Verger chants the hours! Ring the bell near him!', 'warn', 2.5); AU.sfx('roar');
+  }
+  AU.sfx('tele', e.windDur);
+}
+function fallingBells(e) {
+  const h = HERO; toast('Bells fall!', 'warn', 1.2);
+  for (let i = 0; i < 3; i++) {
+    const a = rand(0, TAU), r = i === 0 ? rand(0, .8) : rand(2.5, 4.5);
+    const x = clamp(h.x + Math.cos(a) * r, 21.5, 34.5), z = clamp(h.z + Math.sin(a) * r, 60, 85);
+    later(e, decal('circle', x, z, 0, { r: 2.5 }), 1.2, () => { if (hitCircle(h.x, h.z, .45, x, z, 2.5)) hurtHero(30, x, z, 2); burst(x, H(x, z) + .5, z, 18, PAL.brass, 5, .5); shake(.25); AU.sfx('clang'); });
+  }
+}
+function vergerUpdate(e, dt) {
+  const h = HERO, md = e.md;
+  e.t += dt; e.flash -= dt;
+  if (e.st === 'dead') {
+    md.g.position.y -= dt * .6; md.body.rotation.x = Math.min(1.2, md.body.rotation.x + dt * .5);
+    if (e.t > 3) { R.scene.remove(md.g); const i = G.enemies.indexOf(e); if (i >= 0) G.enemies.splice(i, 1); }
+    return;
+  }
+  const hpK = e.hp / e.max, prevPhase = e.phase; e.phase = hpK < .3 ? 3 : hpK < .7 ? 2 : 1;
+  if (e.phase === 2 && prevPhase === 1) { e.chantT = 1.5; toast('The Verger begins to keep the hours...', 'warn', 2); }
+  if (e.phase === 3 && prevPhase === 2) toast('The bell-tower groans overhead!', 'warn', 2);
+  const inArena = G.arena === e;
+  if (e.stunned > 0) e.stunned -= dt;
+  laterUpdate(e, dt);
+  if (e.st !== 'dormant') e.untargetable = false;
+  const k = e.t / (e.windDur || 1), spd = 2.2 * (e.phase === 3 ? 1.25 : 1) * (G.tideTarget === 1 ? .85 : 1);
+  switch (e.st) {
+    case 'dormant': e.untargetable = true; break;
+    case 'idle': case 'chase': {
+      if (!inArena) break;
+      const dh = dist(e.x, e.z, h.x, h.z), a = angTo(e.x, e.z, h.x, h.z);
+      e.a = turnTo(e.a, a, 2.4 * dt);
+      if (dh > 3.4) moveEnemy(e, Math.sin(e.a) * spd * dt, Math.cos(e.a) * spd * dt);
+      e.atkT -= dt;
+      if (e.phase >= 2) e.chantT -= dt;
+      if (e.phase === 3) { e.bellT -= dt; if (e.bellT <= 0) { e.bellT = 12; fallingBells(e); } }
+      if (e.atkT <= 0 && h.st !== 'dead') {
+        e.atkT = e.phase === 3 ? 1.1 : 1.5;
+        if (e.phase >= 2 && e.chantT <= 0) { e.chantT = 30; vergerAttack(e, 'chant'); }
+        else if (dh < 4.6) vergerAttack(e, Math.random() < .55 ? 'censer' : 'toll');
+        else if (dh < 9.5) vergerAttack(e, 'lash');
+        else e.atkT = .3;
+      }
+      break;
+    }
+    case 'windup': {
+      e.decals && e.decals.forEach(d => d && d.set('uFill', k));
+      if (e.t >= e.windDur) {
+        if (e.kind === 'censer') { if (dist(h.x, h.z, e.x, e.z) <= 5.45) hurtHero(40, e.x, e.z, 3); burst(e.x, e.y + 1, e.z, 24, 0x8fe3cf, 6, .5); shake(.25); AU.sfx('clang'); }
+        if (e.kind === 'toll') { if (hitCircle(h.x, h.z, .45, e.tx, e.tz, 3)) hurtHero(28, e.tx, e.tz, 2); burst(e.tx, e.y + .3, e.tz, 20, 0xd8f6ee, 5, .5); shake(.35); }
+        if (e.kind === 'lash') { if (hitLine(h.x, h.z, .45, e.x, e.z, e.a, 9, 1.2)) hurtHero(32, e.x, e.z, 3); for (let i = 1; i < 9; i++) spawnP(e.x + Math.sin(e.a) * i, e.y + .4, e.z + Math.cos(e.a) * i, 0, 2, 0, .4, 1.2, PAL.brass); }
+        freeBossDecals(e); e.st = 'recover'; e.t = 0; e.windDur = .7;
+      }
+      break;
+    }
+    case 'channel': {
+      const d = e.decals && e.decals[0]; if (d) d.set('uFill', k);
+      if (Math.random() < dt * 8) spawnP(e.x + rand(-1, 1), e.y + 4.5, e.z + rand(-1, 1), 0, 1.5, 0, .8, 1.2, PAL.foam, 0);
+      if (e.t >= e.windDur) {
+        e.channel = false; freeBossDecals(e); e.hours = Math.min(4, e.hours + 1);
+        toast('He skips an hour! The tide turns.', 'warn', 2.5); forceTide(1 - G.tideTarget); shake(.4);
+        for (let i = 0; i < 2; i++) { const [px, pz] = HOUR_PILLARS[(e.hours + i * 2) % 4], x = lerp(px, 28, .25), z = lerp(pz, 72, .15); const a = spawnEnemy('acolyte', x, z, { tier: 3 }); a.awake = true; a.aggro = true; }
+        e.st = 'recover'; e.t = 0; e.windDur = .6;
+      }
+      break;
+    }
+    case 'stun': if (e.t >= 4) { e.st = 'chase'; e.t = 0; e.stunned = 0; } break;
+    case 'recover': if (e.t >= (e.windDur || .6)) { e.st = 'chase'; e.t = 0; } break;
+  }
+  // visuals
+  e.y = Math.max(H(e.x, e.z), -.4);
+  const dormant = e.st === 'dormant';
+  md.g.position.set(e.x, e.y - (dormant ? .9 : 0), e.z); md.g.rotation.y = e.a;
+  md.body.rotation.x = lerp(md.body.rotation.x, dormant ? .55 : e.st === 'stun' ? .35 : 0, 1 - Math.exp(-4 * dt));
+  const sway = Math.sin(G.time * 1.3) * .05; md.body.rotation.z = sway;
+  const w = e.st === 'windup' ? Math.sin(Math.min(1, k) * Math.PI) : 0;
+  md.censerArm.rotation.x = e.kind === 'censer' && e.st === 'windup' ? -1.2 * w : -.2 + Math.sin(G.time * 2) * .15;
+  md.censerArm.rotation.z = e.kind === 'censer' && e.st === 'windup' ? k * TAU * 1.5 : 0;
+  md.censer.rotation.x = Math.sin(G.time * 2.5) * .3;
+  md.staffArm.rotation.x = e.kind === 'toll' && e.st === 'windup' ? -1.4 * w : e.kind === 'lash' && e.st === 'windup' ? -1.9 * Math.min(1, k * 1.5) : -.15;
+  if (e.st === 'channel') { md.staffArm.rotation.x = -2.6; md.censerArm.rotation.x = -2.4; md.body.position.y = .3 + Math.sin(G.time * 6) * .05; } else md.body.position.y = 0;
+  bossFlash(e);
+}
+function vergerDeath(e) {
+  freeBossDecals(e); laterClear(e); e.st = 'dead'; e.t = 0; e.hp = 0; e.channel = false;
+  AU.sfx('roar'); shake(.8); G.hitStop = .14;
+  burst(e.x, e.y + 3, e.z, 60, PAL.brass, 6, 1.2, 1.5, -6, 5);
+  const S = G.S, B = BOSSES.B2; S.flags.bosses.B2 = true;
+  gainXP(B.xp); dropLoot(e.x, e.z, B.glass, 4, 1); addItem(B.item);
+  spawnPickup('key', e.x, e.z - 2.5, 1, 'highNote');
+  for (const x of G.enemies.slice()) if (x !== e && !x.boss && !x.group) { x.noReward = true; killEnemy(x); }
+  G.boss = null; endArena(true);
+  toast('The Verger lets the hours go', 'brass', 3);
+  questEvent('boss', 'B2'); autosave();
+}
+
+/* =====================================================================
+   B3: THE UNDERTOLL
+   ===================================================================== */
+const UC = { x: GREAT_BELL.x, z: GREAT_BELL.z };   // arena centre
+function buildUndertoll() {
+  const g = new THREE.Group(), m = VC.clone();
+  const segMat = new THREE.MeshStandardMaterial({ color: 0x0d2b3e, transparent: true, opacity: .9, flatShading: true, roughness: .25, metalness: .2, emissive: 0x0b3a48, emissiveIntensity: .25 });
+  const segs = [];
+  for (let i = 0; i < 14; i++) {
+    const r = 1.25 - i * .055, s = new THREE.Group();
+    const ball = new THREE.Mesh(GEO.sph, segMat); ball.scale.set(r, r * .9, r); ball.castShadow = true; s.add(ball);
+    const plates = new THREE.Mesh(merge([part(GEO.box, 0xb08a4a, [0, r * .82, 0], [0, 0, 0], [r * .9, .14, r * .7]), part(GEO.box, 0x9a7a40, [r * .7, r * .45, 0], [0, 0, -.8], [.12, r * .6, r * .6]), part(GEO.box, 0x9a7a40, [-r * .7, r * .45, 0], [0, 0, .8], [.12, r * .6, r * .6]), part(GEO.cone4, 0xb08a4a, [0, r * 1.05, 0], 0, [.18, .5, .18])]), m);
+    plates.castShadow = true; s.add(plates); g.add(s); segs.push(s);
+  }
+  // head: a bell-shaped bronze skull with a glowing seafoam crack
+  const head = new THREE.Group(); g.add(head);
+  const skull = new THREE.Mesh(merge([part(frustum(.9, 2.0, 2.4, 10), 0xa88446, [0, 0, 0], [Math.PI / 2, 0, 0]), part(new THREE.TorusGeometry(2.0, .16, 4, 14), 0xc69c55, [0, 0, 1.2]),
+    part(GEO.sph7, 0xa88446, [0, 0, -1.3], 0, [.95, .95, .6]), part(GEO.box, 0x1a1410, [0, -.7, 1.0], [.3, 0, 0], [2.6, .3, 1.6]),
+    part(GEO.cone4, 0xe8e0c8, [-.9, -.8, 1.6], [Math.PI, 0, 0], [.14, .5, .14]), part(GEO.cone4, 0xe8e0c8, [.9, -.8, 1.6], [Math.PI, 0, 0], [.14, .5, .14]), part(GEO.cone4, 0xe8e0c8, [0, -.85, 1.7], [Math.PI, 0, 0], [.12, .45, .12])]), m);
+  skull.castShadow = true; head.add(skull);
+  const crack = new THREE.Mesh(merge([part(GEO.box, 0xffffff, [.3, .95, .3], [0, .2, .5], [.12, .06, 1.8]), part(GEO.box, 0xffffff, [-.2, .9, -.4], [0, -.4, -.3], [.1, .06, 1.2])]), new THREE.MeshBasicMaterial({ color: PAL.foam }));
+  head.add(crack);
+  for (const sx of [-1, 1]) { const ey = new THREE.Mesh(GEO.sph, mat(0x8fe3cf, { basic: 1 })); ey.scale.setScalar(.2); ey.position.set(sx * .7, .25, 1.45); head.add(ey); }
+  const hl = halo(PAL.foam, 2.4, .12); head.add(hl);
+  return { g, segs, head, mat: m, segMat, halo: hl };
+}
+const KNOT_GEO = () => KNOT_GEO.g || (KNOT_GEO.g = new THREE.TorusKnotGeometry(.55, .2, 40, 6));
+function spawnKnot(b, i) {
+  const a = i * Math.PI / 2, x = UC.x + Math.cos(a) * 9.6, z = UC.z + Math.sin(a) * 9.6;
+  const g = new THREE.Group(), m = new THREE.MeshStandardMaterial({ color: 0xb08a4a, metalness: .6, roughness: .35, flatShading: true, emissive: PAL.foam, emissiveIntensity: .25 });
+  const knot = new THREE.Mesh(KNOT_GEO(), m); knot.castShadow = true; knot.position.y = 1.3; g.add(knot);
+  const base = new THREE.Mesh(merge([part(GEO.sph, 0x0d2b3e, [0, .2, 0], 0, [.8, .5, .8])]), b.md.segMat); g.add(base);
+  const hl = halo(PAL.foam, 1.3, .14); hl.position.y = 1.3; g.add(hl);
+  const y = H(x, z); g.position.set(x, y, z); R.scene.add(g);
+  const e = {
+    id: EID++, type: 'knot', D: { name: 'Bronze Knot', heavy: true, dmg: 0, spd: 0 }, x, z, y, a: 0, home: { x, z }, max: BOSSES.B3.knotHp, hp: BOSSES.B3.knotHp,
+    dmgMul: 0, xp: 0, glassMul: 0, size: 1.1, elite: 0, st: 'idle', t: 0, model: { g, mat: m, parts: {} }, flash: 0, cracked: 0, guardBroken: 0, hits: [], noReward: true, knot: true, dmgY: 2.4, owner: b, kvx: 0, kvz: 0,
+  };
+  e.update = dt => {
+    e.t += dt; e.flash -= dt;
+    if (e.st === 'dead') { const k = e.t / .5; g.scale.setScalar(Math.max(.01, 1 - k)); if (e.t >= .5) { R.scene.remove(g); const j = G.enemies.indexOf(e); if (j >= 0) G.enemies.splice(j, 1); } return; }
+    knot.rotation.y += dt * 1.2; knot.rotation.x = Math.sin(G.time * 1.5 + i) * .3; knot.position.y = 1.3 + Math.sin(G.time * 2 + i) * .12;
+    if (e.flash > 0) { m.emissive.setRGB(1, 1, 1); m.emissiveIntensity = .8; } else { m.emissive.set(PAL.foam); m.emissiveIntensity = .25 + .15 * Math.sin(G.time * 4 + i); }
+  };
+  G.enemies.push(e); return e;
+}
+function spawnUndertoll() {
+  const B = BOSSES.B3, md = buildUndertoll(); R.scene.add(md.g);
+  const e = {
+    id: EID++, boss: 'B3', type: 'undertoll', D: { name: B.name, heavy: true, dmg: 0, spd: 0 }, x: UC.x, z: UC.z + 20, y: 0, a: 0, home: { x: UC.x, z: UC.z }, arenaR: 30,
+    max: B.hp, hp: B.hp, size: 2.4, st: 'swim', t: 0, model: { g: md.g, mat: md.mat, parts: {} }, md, flash: 0, atkT: 3, spitT: 4, crushT: 3, th: Math.PI / 2, form: 'flood',
+    hushes: [.75, .5, .25], knots: [], vuln: false, untargetable: true, dmgY: 3.2, hits: [], camDist: 21, focus: UC, segP: [],
+    intro: 'The Undertoll rises from the deep! Ring the tide out to bare its Knots.',
+  };
+  e.bossMod = d => e.st === 'collapse' ? d * 2 : d;
+  e.update = dt => undertollUpdate(e, dt);
+  e.onDeath = () => undertollDeath(e);
+  e.onStart = () => { forceTide(1); Object.assign(R.weatherTarget, { fog: 1.7, sun: .35, wind: 2.6, rain: 1, tint: .6 }); };
+  e.cleanup = () => { R.scene.remove(md.g); freeBossDecals(e); laterClear(e); for (const k of e.knots) if (G.enemies.includes(k)) { R.scene.remove(k.model.g); G.enemies.splice(G.enemies.indexOf(k), 1); } e.knots = []; G.hush = 0; };
+  for (let i = 0; i < 14; i++) e.segP.push(new THREE.Vector3(UC.x, -3, UC.z + 20 + i));
+  G.enemies.push(e); G.boss = e; return e;
+}
+function undertollArena(dt) {
+  const S = G.S; if (S.flags.bosses.B3 || !S.keyItems.includes('tongue')) return;
+  const h = HERO, d = dist(h.x, h.z, UC.x, UC.z);
+  if (!G.boss && d < 75) spawnUndertoll();
+  const b = G.boss; if (!b || b.boss !== 'B3') return;
+  if (!G.arena && d > 90) { b.cleanup(); G.enemies.splice(G.enemies.indexOf(b), 1); G.boss = null; return; }
+  if (!G.arena && d < 9.6 && h.st !== 'pull' && h.st !== 'dead') { startArena(b); b.onStart(); }
+  if (G.arena === b && Math.random() < dt * .12) { R.flash = .12; AU.sfx('thunder'); }
+}
+function knotsAlive(e) { return e.knots.filter(k => k.hp > 0 && G.enemies.includes(k)); }
+function spawnKnots(e) { for (const k of e.knots) if (G.enemies.includes(k)) { R.scene.remove(k.model.g); G.enemies.splice(G.enemies.indexOf(k), 1); } e.knots = [0, 1, 2, 3].map(i => spawnKnot(e, i)); }
+function removeKnots(e) { for (const k of e.knots) if (k.hp > 0 && G.enemies.includes(k)) { k.st = 'dead'; k.t = 0; k.hp = 0; } e.knots = []; }
+function utAttack(e, kind) {
+  const h = HERO; e.st = 'windup'; e.t = 0; e.kind = kind; e.decals = [];
+  if (kind === 'sweep') { e.windDur = 1.2; e.sa = angTo(UC.x, UC.z, e.x, e.z); e.decals.push(decal('cone', UC.x, UC.z, e.sa, { r: 11.6, ang: 180 })); }
+  if (kind === 'lunge') {
+    e.windDur = 1.0; const ex = UC.x + Math.cos(e.th) * 12.5, ez = UC.z + Math.sin(e.th) * 12.5, a = angTo(ex, ez, h.x, h.z);
+    const L = Math.min(14, dist(ex, ez, h.x, h.z) + 3); e.lx = ex; e.lz = ez; e.la = a; e.ll = L;
+    let tx = ex + Math.sin(a) * L, tz = ez + Math.cos(a) * L; const dc = dist(tx, tz, UC.x, UC.z); if (dc > 9.5) { tx = UC.x + (tx - UC.x) / dc * 9.5; tz = UC.z + (tz - UC.z) / dc * 9.5; }
+    e.tx = tx; e.tz = tz; e.decals.push(decal('line', ex, ez, a, { len: L, w: 3 }));
+  }
+  if (kind === 'spit') { e.windDur = .6; e.sp = [-.12, 0, .12].map(o => angTo(e.x, e.z, h.x, h.z) + o); for (const a of e.sp) e.decals.push(decal('line', e.x, e.z, a, { len: 14, w: .6, op: .6 })); }
+  if (kind === 'crush') {
+    e.windDur = 1.0; const a = rand(0, TAU), r = rand(2, 8);
+    e.cpts = [[h.x, h.z], [UC.x + Math.cos(a) * r, UC.z + Math.sin(a) * r]];
+    for (const [x, z] of e.cpts) e.decals.push(decal('circle', x, z, 0, { r: 3 }));
+  }
+  if (kind === 'hush') { e.st = 'hush'; e.windDur = 1.5; e.decals.push(decal('ring', UC.x, UC.z, 0, { r: 11, inner: .9, op: .9 })); AU.sfx('roar'); toast(e.last ? 'LAST TOLL! The sea holds high. Break the Knots!' : 'The Undertoll screams. HUSH!', 'warn', 2.5); }
+  AU.sfx('tele', e.windDur);
+}
+function shardProj(e, a) {
+  const m = new THREE.Mesh(GEO.oct, brassMat()); m.scale.set(.22, .22, .45); R.scene.add(m);
+  const p = { kind: 'shard', x: e.x, z: e.z, y: e.y + 1.2, a, t: 0, mesh: m };
+  p.update = (p, dt) => {
+    p.t += dt; p.x += Math.sin(p.a) * 12 * dt; p.z += Math.cos(p.a) * 12 * dt; p.y = lerp(p.y, Math.max(H(p.x, p.z), G.waterY) + 1, 1 - Math.exp(-3 * dt));
+    m.position.set(p.x, p.y, p.z); m.rotation.y = p.a; m.rotation.z += dt * 10;
+    if (HERO.st !== 'dead' && hitCircle(HERO.x, HERO.z, .45, p.x, p.z, .55)) { hurtHero(20, p.x - Math.sin(p.a), p.z - Math.cos(p.a), 1.2); burst(p.x, p.y, p.z, 8, PAL.brass, 3, .4); R.scene.remove(m); return true; }
+    if (p.t > 3) { R.scene.remove(m); return true; }
+    return false;
+  };
+  G.proj.push(p);
+}
+function undertollUpdate(e, dt) {
+  const h = HERO, md = e.md, inArena = G.arena === e;
+  e.t += dt; e.flash -= dt;
+  laterUpdate(e, dt);
+  const tideHigh = G.tideTarget === 1;
+  if (e.st === 'dead') {
+    for (let i = 0; i < 14; i++) e.segP[i].y -= dt * (1 + i * .1);
+    md.head.position.y -= dt * 1.2; md.head.rotation.x += dt * .3;
+    utPlaceSegs(e, dt, true);
+    if (e.t > 4) { R.scene.remove(md.g); const i = G.enemies.indexOf(e); if (i >= 0) G.enemies.splice(i, 1); }
+    return;
+  }
+  // form follows the tide (the Last Toll holds it high)
+  const prevForm = e.form;
+  if (G.tide > .7 && tideHigh) e.form = 'flood'; else if (G.tide < .3 && !tideHigh) e.form = 'ebb';
+  if (inArena && e.form !== prevForm) {
+    if (e.form === 'ebb' && !e.last) { spawnKnots(e); toast('The sea drains. Break the four Bronze Knots!', 'brass', 2.5); }
+    if (e.form === 'flood' && !e.last && e.st !== 'collapse') removeKnots(e);
+  }
+  const hpK = e.hp / e.max;
+  // the Hush at 75 / 50 / 25 %, and the Last Toll under 10 %
+  const calm = ['swim', 'ebbIdle', 'chase', 'idle'].includes(e.st);
+  if (inArena && calm && e.hushes.length && hpK <= e.hushes[0]) { e.hushes.shift(); utAttack(e, 'hush'); }
+  else if (inArena && calm && !e.last && hpK < .1) { e.last = true; utAttack(e, 'hush'); }
+  if (e.st === 'idle' || e.st === 'chase') e.st = e.form === 'ebb' ? 'ebbIdle' : 'swim';
+  e.vuln = false;
+  const k = e.t / (e.windDur || 1);
+  let hx = e.x, hz = e.z, hy = e.y, follow = 4;
+  const ringPos = (r) => [UC.x + Math.cos(e.th) * r, UC.z + Math.sin(e.th) * r];
+  switch (e.st) {
+    case 'swim': case 'ebbIdle': {
+      const ebb = e.form === 'ebb' && !e.last;
+      if (ebb && e.st === 'swim') e.st = 'ebbIdle'; if (!ebb && e.st === 'ebbIdle') e.st = 'swim';
+      // the head patrols the northern arc (in view of the camera), its body trailing behind
+      e.arcT = (e.arcT || 0) + dt * (ebb ? .05 : .16); const nth = -Math.PI / 2 + 1.5 * Math.sin(e.arcT);
+      e.thDir = Math.sign(nth - e.th) || e.thDir || 1; e.th = nth;
+      const [rx, rz] = ringPos(ebb ? 13.6 : 20); hx = rx; hz = rz; hy = ebb ? H(rx, rz) + 1.6 + Math.sin(G.time * 3) * .3 : G.waterY + 1.2 + Math.sin(G.time * 1.8) * .4;
+      if (!inArena || h.st === 'dead') break;
+      if (ebb) { e.crushT -= dt; if (e.crushT <= 0) { e.crushT = 5; utAttack(e, 'crush'); } }
+      else {
+        e.spitT -= dt; e.atkT -= dt;
+        if (e.spitT <= 0) { e.spitT = 6; utAttack(e, 'spit'); }
+        else if (e.atkT <= 0) { e.atkT = e.last ? 2.2 : 2.6; utAttack(e, e.last && G.time - (e.lastSweep || 0) > 4 ? 'sweep' : Math.random() < .5 ? 'lunge' : 'sweep'); if (e.kind === 'sweep') e.lastSweep = G.time; }
+      }
+      break;
+    }
+    case 'windup': {
+      e.decals && e.decals.forEach(d => d && d.set('uFill', k));
+      if (e.kind === 'lunge') { hx = lerp(e.x, e.lx, .5); hz = lerp(e.z, e.lz, .5); hy = Math.max(H(hx, hz), G.waterY) + 2 + k; follow = 3; }
+      else if (e.kind === 'crush') { const [rx, rz] = ringPos(13.6); hx = rx; hz = rz; hy = H(rx, rz) + 2.2 + k * 1.5; }
+      else { const ebb = e.form === 'ebb' && !e.last, [rx, rz] = ringPos(ebb ? 13.6 : 20); hx = rx; hz = rz; hy = (ebb ? H(rx, rz) + 1.6 : G.waterY + 1.6) + k * 1.5; }
+      if (e.t >= e.windDur) {
+        if (e.kind === 'sweep') {
+          const d = dist(h.x, h.z, UC.x, UC.z);
+          if (d < 11.8 && Math.abs(angDiff(e.sa, angTo(UC.x, UC.z, h.x, h.z))) < Math.PI / 2 + .05) hurtHero(55, e.x, e.z, 6);
+          for (let i = 0; i < 40; i++) { const a = e.sa + rand(-1.5, 1.5), r = rand(1, 11); spawnP(UC.x + Math.sin(a) * r, H(UC.x, UC.z) + .3, UC.z + Math.cos(a) * r, rand(-2, 2), rand(3, 6), rand(-2, 2), .8, 1.6, 0xd8f6ee); }
+          shake(.5); AU.sfx('swept');
+        }
+        if (e.kind === 'lunge') { e.lungeT = 0; e.st = 'lunge'; e.t = 0; freeBossDecals(e); break; }
+        if (e.kind === 'spit') for (const a of e.sp) shardProj(e, a);
+        if (e.kind === 'crush') { for (const [x, z] of e.cpts) { if (hitCircle(h.x, h.z, .45, x, z, 3)) hurtHero(35, x, z, 2); burst(x, H(x, z) + .3, z, 20, 0x2a5a6a, 5, .6); } shake(.4); }
+        freeBossDecals(e); e.st = e.form === 'ebb' && !e.last ? 'ebbIdle' : 'swim'; e.t = 0;
+      }
+      break;
+    }
+    case 'lunge': {
+      const j = clamp(e.t / .3, 0, 1); hx = lerp(e.lx, e.tx, j); hz = lerp(e.lz, e.tz, j); hy = H(hx, hz) + 1.1; follow = 30;
+      if (j >= 1 && !e.lungeHit) { e.lungeHit = true; if (hitLine(h.x, h.z, .45, e.lx, e.lz, e.la, e.ll, 3)) hurtHero(45, e.lx, e.lz, 4); shake(.6); burst(e.tx, H(e.tx, e.tz) + .5, e.tz, 30, 0xd8f6ee, 6, .6); }
+      if (e.t >= .3) { e.st = 'rest'; e.t = 0; e.lungeHit = false; toast('Its head is down. Strike!', 'brass', 1.2); }
+      break;
+    }
+    case 'rest': { hx = e.tx; hz = e.tz; hy = H(hx, hz) + .9 + Math.sin(G.time * 4) * .05; e.vuln = true; follow = 10; if (e.t >= 2.5) { e.st = e.form === 'ebb' && !e.last ? 'ebbIdle' : 'swim'; e.t = 0; } break; }
+    case 'collapse': { const [rx, rz] = ringPos(6.5); hx = rx; hz = rz; hy = H(rx, rz) + .8; e.vuln = true; follow = 3; if (e.t >= 8) { e.st = e.form === 'ebb' && !e.last ? 'ebbIdle' : 'swim'; e.t = 0; toast('The Undertoll rears back up', 'warn', 1.5); if (e.last) spawnKnots(e); } break; }
+    case 'hush': {
+      const d = e.decals && e.decals[0]; if (d) { d.set('uFill', k); d.mesh.scale.setScalar(lerp(1, 11, k)); }
+      const [rx, rz] = ringPos(e.form === 'ebb' ? 13.6 : 18); hx = rx; hz = rz; hy = Math.max(H(rx, rz), G.waterY) + 3 + Math.sin(G.time * 30) * .15;
+      if (e.t >= e.windDur) {
+        freeBossDecals(e); shake(.6); R.flash = .15;
+        if (e.last) { forceTide(1); G.hush = 1e6; spawnKnots(e); }
+        else { forceTide(1 - G.tideTarget); G.hush = 10; toast('The Saltbell is hushed for 10 seconds!', 'warn', 2.2); }
+        e.st = 'swim'; e.t = 0; e.atkT = 2;
+      }
+      break;
+    }
+  }
+  // knots broken: the head collapses onto the plaza
+  if (inArena && e.knots.length && !knotsAlive(e).length && e.st !== 'collapse' && e.st !== 'hush') { e.knots = []; freeBossDecals(e); laterClear(e); e.st = 'collapse'; e.t = 0; toast('The Knots are broken! The head collapses (x2 damage)', 'brass', 2.5); shake(.7); AU.sfx('clang'); }
+  e.untargetable = !e.vuln;
+  const f = 1 - Math.exp(-follow * dt);
+  e.x = lerp(e.x, hx, f); e.z = lerp(e.z, hz, f); e.y = lerp(e.y, hy, f);
+  e.a = angTo(e.x, e.z, h.x, h.z);
+  utPlaceSegs(e, dt);
+  md.head.position.set(e.x, e.y, e.z); md.head.rotation.set(e.st === 'collapse' || e.st === 'rest' ? .35 : -.15 + Math.sin(G.time * 2) * .08, e.a, e.st === 'collapse' ? .3 : 0);
+  md.halo.material.opacity = e.vuln ? .22 + .1 * Math.sin(G.time * 8) : .08;
+  bossFlash(e, e.st === 'hush' || e.st === 'lunge');
+}
+function utPlaceSegs(e, dt, free) {
+  // the body trails from the head back along the coil ring (r 20 at sea, r 13.6 on the rocks at ebb)
+  const md = e.md, ebb = e.form === 'ebb' && !e.last, R0 = ebb ? 13.8 : 20;
+  const hd = Math.hypot(e.x - UC.x, e.z - UC.z), out = Math.abs(hd - R0) < 2.5;
+  const ax = UC.x + Math.cos(e.th) * R0, az = UC.z + Math.sin(e.th) * R0;
+  for (let i = 0; i < 14; i++) {
+    const p = e.segP[i];
+    if (!free) {
+      let tx, tz;
+      if (!out && i < 5) { const s = (i + 1) / 5; tx = lerp(e.x, ax, s); tz = lerp(e.z, az, s); }
+      else { const th = e.th - (e.thDir || 1) * (out ? i + 1 : i - 4) * .105 * (ebb ? 1.35 : 1); tx = UC.x + Math.cos(th) * R0; tz = UC.z + Math.sin(th) * R0; }
+      const g = H(tx, tz), ty = ebb ? g + .55 + Math.sin(G.time * 2 + i) * .08 : Math.max(g + .4, G.waterY + Math.sin(G.time * 2.2 - i * .75) * .7);
+      const f = 1 - Math.exp(-8 * dt); p.x = lerp(p.x, tx, f); p.z = lerp(p.z, tz, f); p.y = lerp(p.y, ty, f);
+    }
+    const s = md.segs[i]; s.position.copy(p);
+    const q = i ? md.segs[i - 1].position : md.head.position; s.rotation.y = Math.atan2(q.x - p.x, q.z - p.z);
+  }
+}
+function undertollDeath(e) {
+  freeBossDecals(e); laterClear(e); removeKnots(e); e.st = 'dead'; e.t = 0; e.hp = 0; e.untargetable = true;
+  AU.sfx('roar'); shake(1); G.hitStop = .2; G.hush = 0; R.flash = .3;
+  burst(e.x, e.y + 1, e.z, 80, PAL.foam, 7, 1.4, 1.6, -5, 6);
+  const S = G.S; S.flags.bosses.B3 = true;
+  for (const x of G.enemies.slice()) if (x !== e && !x.boss && !x.knot) { x.noReward = true; killEnemy(x); }
+  G.boss = null; endArena(true);
+  if (G.tideTarget !== 1) forceTide(1);
+  toast('The Undertoll sinks. The Great Bell is waiting.', 'brass', 4);
+  if (R.greatBell) R.greatBell.swing = .6;
+  questEvent('boss', 'B3'); autosave();
+}
+
+/* =====================================================================
+   Q5: the forge scene (6 s) that casts the Bell-Tongue
+   ===================================================================== */
+function startForgeScene() {
+  const S = G.S; G.cine = {
+    t: 0, dur: 6, x: -14, z: -91, y: 1.2, dist: 8.5, fx: 1,
+    tick(t, dt) {
+      if (Math.random() < dt * 25) spawnP(-14.9 + rand(-.3, .3), H(-14, -91) + 1, -91.6, rand(-2, 2), rand(2, 5), rand(-2, 2), .6, 1.1, Math.random() < .5 ? PAL.brass : 0xff9a4a);
+      for (const [at, n] of [[1, 'lowNote'], [2.4, 'midNote'], [3.8, 'highNote']]) if (t >= at && !this['p' + n]) { this['p' + n] = 1; AU.sfx('note', n); burst(-14.9, H(-14, -91) + 1.4, -91.6, 30, n === 'lowNote' ? 0x6aa8ff : n === 'midNote' ? 0x8fe39a : 0xfff2cc, 4, .8); shake(.15); }
+      if (t >= 5 && !this.chord) { this.chord = 1; AU.sfx('chord'); burst(-14.9, H(-14, -91) + 1.4, -91.6, 50, PAL.brass, 6, 1, 1.4); }
+    },
+    done() { Dlg.start(DLG.q5forge2, () => { if (!S.keyItems.includes('tongue')) S.keyItems.push('tongue'); toast('Key item: The Bell-Tongue', 'brass', 3); AU.sfx('level'); questUpdate(); autosave(); }, null, 'pell'); },
+  };
+}
+
+/* =====================================================================
+   Win sequence (design 15): the Great Bell, camera over the island,
+   one natural tide cycle, "The tide turns.", credits, then post-game.
+   ===================================================================== */
+const CREDITS = [
+  ['SALTBELL', ''], ['', 'Ring the sea in. Ring it out.'], ['', ''],
+  ['Oda Fenn', 'the bellwright\'s apprentice'], ['Hesper', 'who got the pitch wrong by a hair'], ['Pell', 'who did not do that twice'],
+  ['Wick, Tibb, Marla', 'Brackwick, which never floods'], ['Ansel', 'and her very patient ferry'], ['Brother Calder', 'who is now late for things'], ['', ''],
+  ['Gristlemaw', 'still wearing the Mallory Grey'], ['The Verger of Low Hours', 'off duty'], ['The Undertoll', 'back in the deep, keeping quieter time'], ['', ''],
+  ['Design, code, art, sound', 'the studio team'], ['3D', 'three.js (MIT licence)'], ['Every sound', 'made live by Web Audio'], ['', ''],
+  ['', 'Thank you for playing.'], ['', 'The tide keeps its own time now.'],
+];
+function startWinSequence() {
+  const S = G.S; if (G.win) return;
+  S.flags.won = true; G.win = { t: 0, stage: 0, cam: { x: R.camera.position.x, y: R.camera.position.y, z: R.camera.position.z } };
+  G.state = 'win'; UI.setInteract(null); UI.bossBar(null); document.body.classList.add('winning');
+  AU.sfx('chord'); if (R.greatBell) R.greatBell.swing = 1.2; shake(.3);
+  // the ripple ring that runs out across the whole sea
+  const rm = new THREE.Mesh(new THREE.RingGeometry(.92, 1, 96).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0xfff2cc, transparent: true, opacity: .8, blending: THREE.AdditiveBlending, depthWrite: false, fog: false }));
+  rm.position.set(UC.x, G.waterY + .15, UC.z); R.scene.add(rm); G.win.ring = rm;
+  saveGame();
+}
+function winUpdate(raw) {
+  const w = G.win, S = G.S; w.t += raw; const t = w.t;
+  if (w.ring) { const r = 2 + t * 34; w.ring.scale.set(r, 1, r); w.ring.position.y = G.waterY + .15; w.ring.material.opacity = clamp(1 - t / 9, 0, .8); if (t > 9) { R.scene.remove(w.ring); w.ring = null; } }
+  if (t > 1.6 && w.stage === 0) { w.stage = 1; flipTide(true); AU.sfx('swept'); }
+  if (t > 5.2 && w.stage === 1) { w.stage = 2; flipTide(true); AU.sfx('swept'); }
+  if (t > 6.6 && w.stage === 2) { w.stage = 3; UI.winCard(true); AU.play('title'); }
+  if (t > 10.5 && w.stage === 3) { w.stage = 4; UI.winCard(false); UI.credits(CREDITS); }
+  if (w.stage === 4 && (t > 36 || w.skip)) { w.stage = 5; finishWin(); }
+  // camera: rise from the plaza over the island on a slow arc (6 s), then hold and drift
+  const k = smooth(clamp(t / 6, 0, 1)), a = -.4 + t * .05;
+  const ex = Math.sin(a) * 120, ez = -10 + Math.cos(a) * 120, ey = 95;
+  R.camera.position.set(lerp(w.cam.x, ex, k), lerp(w.cam.y, ey, k), lerp(w.cam.z, ez, k));
+  R.camera.lookAt(lerp(HERO.x, 0, k), lerp(HERO.y, 0, k), lerp(HERO.z, -5, k));
+  R.sky.position.copy(R.camera.position);
+}
+function finishWin() {
+  const S = G.S;
+  fadeThen(() => {
+    UI.credits(null); UI.winCard(false); document.body.classList.remove('winning');
+    if (G.win && G.win.ring) R.scene.remove(G.win.ring);
+    G.win = null; G.state = 'play'; G.natT = 0;
+    HERO.x = UC.x; HERO.z = UC.z - 3.5; HERO.st = 'move'; HERO.a = Math.PI;
+    R.cam.curDist = 0; updateCamera(0, { x: HERO.x, y: H(HERO.x, HERO.z) + 1.2, z: HERO.z }, { snap: 1 });
+    G.zone = null; zoneUpdate(); UI.quest(); refreshStats(); questUpdate(); saveGame();
+    setTimeout(() => UI.questToast('Post-game', 'The tide keeps its own time', 'It turns every 90 s now, and the bell rings out in 6 s. Chests, chimes and old friends are still out there.'), 700);
+  });
+}
+function skipCredits() { if (G.win && G.win.stage >= 3) { G.win.skip = true; if (G.win.stage === 3) { G.win.stage = 4; G.win.t = Math.max(G.win.t, 10.6); UI.winCard(false); } } }
 
 /* ===== quests.js ===== */
 /* =====================================================================
@@ -2926,8 +3675,16 @@ function completeQuest() {
 }
 function questEvent(kind, id) {
   const S = G.S; if (!S) return;
-  if (kind === 'ring' && S.quests.main.id === 'Q1' && !S.flags.panDone) { S.flags.panDone = true; G.cine = { t: 0, dur: 4, x: -6, z: -14 }; }
+  if (kind === 'ring' && S.quests.main.id === 'Q1' && !S.flags.panDone) { S.flags.panDone = true; if (!S.flags.pans.includes('reach')) S.flags.pans.push('reach'); G.cine = { t: 0, dur: 4, x: -6, z: -14 }; }
+  // Q4: the nave door opens to a note rung at low water
+  if (kind === 'ring' && !S.flags.abbeyDoor && dist(HERO.x, HERO.z, 28, 57) < 7.5 && S.quests.done.includes('Q3')) {
+    if (G.tideTarget === 1) {   // the bell was rung while the tide was low
+      S.flags.abbeyDoor = true; AU.sfx('clang'); toast('The nave door knows the note. It swings open.', 'brass', 3);
+      G.cine = { t: 0, dur: 3, x: 28, z: 64, y: 0, dist: 15 }; autosave();
+    } else setTimeout(() => { if (G.state === 'play' && !S.flags.abbeyDoor) Dlg.start(DLG.doorHigh); }, 700);
+  }
   if (kind === 'key' && id === 'midNote') { S.flags.ambush = true; toast('The mire stirs. Ambush!', 'warn', 2); }
+  if (kind === 'gate') G.cine = { t: 0, dur: 3.2, x: 72, z: -20, y: 0, dist: 20 };
   if (kind === 'ring' && S.quests.main.id === 'Q2' && G.tideTarget === 0 && !S.flags.q2hint) { S.flags.q2hint = true; }
   questUpdate();
 }
@@ -2935,18 +3692,25 @@ function questEvent(kind, id) {
 /* ---------- NPC conversations ---------- */
 function talkTo(id) {
   const S = G.S, q = S.quests.main, n = NPCS[id];
-  const idle = () => { const L = IDLE[id]; G.idleIx = (G.idleIx || 0) + 1; return [[id, L[G.idleIx % L.length]]]; };
+  const idle = () => { const L = S.flags.won && POST[id] ? POST[id] : IDLE[id]; G.idleIx = (G.idleIx || 0) + 1; return [[id, L[G.idleIx % L.length]]]; };
   let lines = null, after = null, choices = null;
   if (id === 'hesper') {
     if (q.id === 'Q0') { if (q.step < 4) lines = DLG.q0early; else { lines = DLG.q0intro; after = () => { S.flags.talkHesper0 = true; if (!S.keyItems.includes('saltbell')) S.keyItems.push('saltbell'); toast('Got the Saltbell (still silent)', 'brass', 2.5); }; } }
     else if (q.id === 'Q1') { if (q.step < 4) lines = DLG.q1wait; else { lines = DLG.q1back; after = () => { S.flags.talkHesper1 = true; }; } }
     else if (q.id === 'Q2') { if (q.step < 5) lines = DLG.q2wait; else { lines = DLG.q2back; after = () => { S.flags.talkHesper2 = true; }; } }
     else if (q.id === 'Q3') { if (q.step < 6) lines = DLG.q3wait; else { lines = DLG.q3back; after = () => { S.flags.talkHesper3 = true; }; } }
+    else if (q.id === 'Q4') { if (q.step < 5) lines = DLG.q4wait; else { lines = DLG.q4back; after = () => { S.flags.talkHesper4 = true; setTimeout(() => { if (G.S === S && S.quests.main.id === 'Q5' && G.state === 'play' && dist(HERO.x, HERO.z, NPCS.hesper.x, NPCS.hesper.z) < 4) talkTo('hesper'); }, 1400); }; } }
+    else if (q.id === 'Q5' && !S.keyItems.includes('tongue')) { lines = DLG.q5forge; after = () => startForgeScene(); }
+    else if (q.id === 'Q5') lines = DLG.q5wait;
     else lines = idle();
     if (!after && (S.hero.passives.length || Object.values(S.hero.ranks).some(r => r > 1))) choices = [['Respec skills (free)', () => respec()], ['Goodbye', null]];
   } else if (id === 'pell') {
     if (q.id === 'Q2' && q.step === 0) { lines = DLG.q2pell; after = () => { S.hero.ranks.undertow = 1; toast('Undertow learned (skill 2)', 'brass', 3); UI.refreshSkills(); }; }
-    else { lines = [['pell', IDLE.pell[(G.idleIx = (G.idleIx || 0) + 1) % 2]]]; choices = [['Forge', () => UI.openForge()], ['Goodbye', null]]; }
+    else if (S.quests.done.includes('Q2') && !S.quests.side.S3.started) { lines = DLG.pellS3; after = () => { S.quests.side.S3.started = true; toast('Side quest: Brass for the Forge', 'quest', 3); }; choices = [['Forge', () => UI.openForge()], ['Goodbye', null]]; }
+    else {
+      lines = idle(); choices = [['Forge', () => UI.openForge()], ['Goodbye', null]];
+      const s3 = S.quests.side.S3; if (s3.started && !s3.done) choices.unshift([`Give 10 brass (you have ${S.mats.brass})`, () => giveBrass()]);
+    }
   } else if (id === 'wick') { lines = DLG.wickShop; choices = [['Shop', () => UI.openShop()], ['Goodbye', null]]; }
   else if (id === 'tibb') {
     const s1 = S.quests.side.S1;
@@ -2965,9 +3729,21 @@ function talkTo(id) {
     else lines = idle();
   } else if (id === 'ansel') {
     if (q.id === 'Q3' && q.step <= 1) { lines = DLG.q3ansel; after = () => { S.hero.ranks.ward = Math.max(1, S.hero.ranks.ward); toast('Brine Ward learned (skill 3)', 'brass', 3); UI.refreshSkills(); }; }
-    else if (S.flags.gateOpen) lines = DLG.q3gate; else lines = idle();
+    else if (S.flags.gateOpen && !S.flags.token) { lines = DLG.anselToken; after = () => { S.flags.token = true; const b = addItem('token'); if (b) UI.itemPopup(b); }; }
+    else if (S.flags.gateOpen && !S.flags.won) lines = DLG.q3gate; else lines = idle();
+  } else if (id === 'calder') {
+    if (S.flags.won) lines = idle();
+    else if (S.flags.bosses.B2) lines = DLG.calderAfter;
+    else if (!S.flags.talkCalder) { lines = DLG.calder; after = () => { S.flags.talkCalder = true; }; }
+    else lines = DLG.calderWait;
   } else lines = idle();
   Dlg.start(lines, () => { if (after) after(); questUpdate(); }, choices, id);
+}
+function giveBrass() {
+  const S = G.S, s3 = S.quests.side.S3;
+  if (S.mats.brass < 10) { Dlg.start([['pell', `That's ${S.mats.brass}. I said ten. I can count, even if the sea can't.`]]); return; }
+  S.mats.brass -= 10; S.mats.pearl += 2; s3.done = true; gainXP(100); AU.sfx('pearl');
+  Dlg.start(DLG.pellS3done, () => { toast('Reward: 2 Pearls, +100 XP', 'item', 3); autosave(); });
 }
 function respec() {
   const h = G.S.hero; let back = h.passives.length; h.passives = [];
@@ -3166,7 +3942,7 @@ const UI = {
     $('#sheet .x').onclick = () => UI.closeSheet();
     $('#pcInteract').onclick = () => IN.fire('interact');
     document.body.classList.toggle('lefty', !!SET.leftHanded);
-    const or = () => document.body.classList.toggle('portrait', innerWidth < innerHeight); or(); addEventListener('resize', or);
+    const or = () => { document.body.classList.toggle('portrait', innerWidth < innerHeight); document.body.classList.toggle('land', innerWidth > innerHeight && innerHeight < 520); }; or(); addEventListener('resize', or); addEventListener('orientationchange', () => setTimeout(or, 200));
   },
   update(dt) {
     if (G.state === 'title' || !G.S) return;
@@ -3201,7 +3977,8 @@ const UI = {
   quest() {
     const q = curQuest(), st = curStep();
     ui.tracker.querySelector('b').textContent = q ? q.n : 'The tide waits';
-    ui.tracker.querySelector('span').textContent = st ? st.t : q ? '' : 'More of Wenmere in the next build.';
+    if (!q && G.S.flags.won) { ui.tracker.querySelector('b').textContent = 'The tide keeps its own time'; ui.tracker.querySelector('span').textContent = completion(G.S) + '% of Wenmere found'; return; }
+    ui.tracker.querySelector('span').textContent = st ? st.t : q ? '' : '';
   },
   questToast(small, title, sub) {
     const box = $('#toasts'); const t = document.createElement('div'); t.className = 'toast big quest';
@@ -3213,6 +3990,14 @@ const UI = {
   bossBar(b) {
     const el = $('#bossBar'); el.classList.toggle('on', !!b);
     if (b) { el.querySelector('.name').textContent = b.D.name; ui.boss = { fill: el.querySelector('.fill'), lag: el.querySelector('.lag') }; } else ui.boss = null;
+  },
+  winCard(on) { let c = $('#wincard'); if (!c) { c = document.createElement('div'); c.id = 'wincard'; c.innerHTML = '<h2>The tide turns.</h2>'; document.body.appendChild(c); } c.classList.toggle('on', !!on); },
+  credits(list) {
+    let c = $('#credits');
+    if (!list) { if (c) c.remove(); return; }
+    c = document.createElement('div'); c.id = 'credits';
+    c.innerHTML = `<div class="roll">${list.map(([a, b]) => `<div class="cr">${a ? `<b>${esc(a)}</b>` : ''}${b ? `<span>${esc(b)}</span>` : ''}</div>`).join('')}</div><button class="ghost" id="skipCr">Skip</button>`;
+    document.body.appendChild(c); $('#skipCr').onclick = e => { e.stopPropagation(); skipCredits(); };
   },
   showDeath() { $('#death').classList.remove('hidden'); G.state = 'dead'; },
   aimArrow(a, len) {
@@ -3297,11 +4082,12 @@ const UI = {
     const S = G.S, q = curQuest();
     let h = '';
     if (q) { h += `<div class="card"><h3>${esc(q.n)}<small>Main quest</small></h3><p>${esc(q.sum)}</p><ul class="steps">${q.steps.map((s, i) => i <= S.quests.main.step ? `<li class="${i < S.quests.main.step ? 'done' : 'cur'}">${esc(s.t)}</li>` : '').join('')}</ul></div>`; }
-    else h += `<div class="card"><h3>The tide waits</h3><p>You have reached the end of this build. More of Wenmere Isle is on its way.</p></div>`;
+    else h += `<div class="card"><h3>The tide keeps its own time</h3><p>The Great Bell rang true. The sea now turns every ${NATURAL_TIDE} s by itself, and the Saltbell rings out in 6 s.</p><p>Completion: ${completion(S)}% · chests ${S.flags.chests.length}/${CHESTS.length} · chimes ${S.flags.chimes.length}/12 · Bell-posts ${S.flags.bellposts.length}/${BELLPOSTS.length}</p></div>`;
     const sd = S.quests.side; h += '<div class="sec">Side quests</div>';
     let any = false;
     if (sd.S1.started) { any = true; h += `<div class="card"><h3>${SIDE.S1.n}<small>Tibb</small></h3><p>${SIDE.S1.sum}</p><p>Chimes found: ${S.flags.chimes.length}/12 · shown to Tibb: ${sd.S1.turnedIn}</p></div>`; }
     if (sd.S2.started) { any = true; h += `<div class="card"><h3>${SIDE.S2.n}<small>Marla</small></h3><p>${SIDE.S2.sum}</p><p>${sd.S2.done ? 'Done' : 'Bundles: ' + sd.S2.nets.length + '/3'}</p></div>`; }
+    if (sd.S3.started) { any = true; h += `<div class="card"><h3>${SIDE.S3.n}<small>Pell</small></h3><p>${SIDE.S3.sum}</p><p>${sd.S3.done ? 'Done' : 'Brass: ' + Math.min(10, S.mats.brass) + '/10 (talk to Pell to hand it in)'}</p></div>`; }
     if (!any) h += '<p style="opacity:.6;font-size:13px">Folk in Brackwick may need a hand.</p>';
     if (S.quests.done.length) h += '<div class="sec">Completed</div>' + S.quests.done.filter(id => id !== 'Q0').map(id => `<div class="card"><h3 style="opacity:.6">${esc(QUESTS[id].n)}</h3></div>`).join('');
     body.innerHTML = h;
@@ -3477,16 +4263,18 @@ let lastSave = 0;
 function saveGame() {
   const S = G.S; if (!S || !G.slot) return false;
   const h = HERO, bp = BELLPOSTS.find(b => b.id === S.respawnBP);
-  if (G.arena || h.st === 'dead' || h.st === 'swept' || h.st === 'pull') S.pos = { x: bp.x, z: bp.z + 1.6 };
+  if (G.state === 'win') S.pos = { x: GREAT_BELL.x, z: GREAT_BELL.z - 3.5 };
+  else if (G.arena || h.st === 'dead' || h.st === 'swept' || h.st === 'pull') S.pos = { x: bp.x, z: bp.z + 1.6 };
   else S.pos = { x: +h.x.toFixed(2), z: +h.z.toFixed(2) };
   S.face = h.a; S.hero.hp = Math.max(1, Math.round(h.hp)); S.hero.sta = Math.round(h.sta); S.hero.res = Math.round(h.res); S.tide = G.tideTarget;
-  const ok = Store.write(G.slot, S); LS.set('last', G.slot); lastSave = G.time; return ok;
+  S.v = SAVE_V; const ok = Store.write(G.slot, S); LS.set('last', G.slot); lastSave = G.time; G.pendingSave = false; return ok;
 }
 function autosave() { if (G.state === 'title' || !G.S) return; if (G.time - lastSave < 2) { G.pendingSave = true; return; } saveGame(); }
 
 function clearRuntime() {
-  for (const e of G.enemies.slice()) { if (e.boss) { R.scene.remove(e.md.g); freeBossDecals(e); } else removeEnemy(e); }
-  G.enemies.length = 0; G.boss = null; G.midNoteSpawned = false; G.arena = null; UI.bossBar(null);
+  for (const e of G.enemies.slice()) { if (e.cleanup) e.cleanup(); else if (e.boss) { R.scene.remove(e.md.g); freeBossDecals(e); } else removeEnemy(e); }
+  for (const e of G.enemies.slice()) if (e.model && e.model.g && e.model.g.parent) R.scene.remove(e.model.g);
+  G.enemies.length = 0; G.boss = null; G.midNoteSpawned = false; G.arena = null; UI.bossBar(null); G.hush = 0;
   for (const p of G.pickups) R.scene.remove(p.m); G.pickups.length = 0;
   for (const p of G.proj) { if (p.mesh) R.scene.remove(p.mesh); if (p.decal) p.decal.free(); } G.proj.length = 0;
   if (G.sprays) { G.sprays.forEach(s => s.d.free()); G.sprays = []; }
@@ -3500,7 +4288,7 @@ function spawnDummies() {
 function startGame() {
   const S = G.S; clearRuntime(); initGroups();
   for (const id in G.groups) G.groups[id].firstLoad = true;
-  G.tideTarget = G.tide = G.tideFrom = S.tide; G.tideT = 1; G.waterY = lerp(WATER_LOW, WATER_HIGH, G.tide); AU.tideLow = !S.tide; G.bellCd = 0; G.hush = 0;
+  G.tideTarget = G.tide = G.tideFrom = S.tide; G.tideT = 1; G.waterY = lerp(WATER_LOW, WATER_HIGH, G.tide); AU.tideLow = !S.tide; G.bellCd = 0; G.hush = 0; G.natT = 0; G.win = null; G.cine = null;
   refreshStats();
   const h = HERO; Object.assign(h, { x: S.pos.x, z: S.pos.z, a: S.face || 0, vx: 0, vz: 0, st: 'move', t: 0, combo: 0, inv: 1, sta: 100, res: S.hero.res || 0, hp: S.hero.hp > 0 ? Math.min(S.hero.hp, ST.maxhp) : ST.maxhp, ward: null, cds: { peal: 0, undertow: 0, ward: 0, tonic: 0 } });
   if (!walkable(h.x, h.z, G.waterY)) { const w = nearestWalkable(h.x, h.z, G.waterY, 20); if (w) { h.x = w[0]; h.z = w[1]; } else { const bp = BELLPOSTS.find(b => b.id === S.respawnBP); h.x = bp.x; h.z = bp.z + 1.6; } }
@@ -3516,7 +4304,7 @@ function startGame() {
 }
 function newGame(slot, coat) {
   G.slot = slot; G.S = newSave(coat); Store.write(slot, G.S); LS.set('last', slot);
-  fadeThen(() => { startGame(); setTimeout(() => UI.questToast('Wenmere Isle', 'Arrival', 'Nine years of high water. Find your feet on the dock.'), 900); });
+  fadeThen(() => { startGame(); setTimeout(() => { if (G.S && G.S.quests.main.id === 'Q0' && G.state === 'play') UI.questToast('Wenmere Isle', 'Arrival', 'Nine years of high water. Find your feet on the dock.'); }, 900); });
 }
 function loadGame(slot) {
   const s = Store.read(slot); if (!s || s.damaged) return;
@@ -3565,11 +4353,39 @@ function frame(now) {
   requestAnimationFrame(frame);
   const real = (now - lastT) / 1000, raw = Math.min(real, .05); lastT = now;
   fpsAcc += Math.min(real, 1); fpsN++;
-  if (fpsAcc >= 1) { const fps = fpsN / fpsAcc; fpsAcc = 0; fpsN = 0; G.fps = fps; if (SET.quality === 'auto' && G.state === 'play') { slowFor = fps < 28 ? slowFor + 1 : 0; if (slowFor >= 5 && G.time - lastDrop > 30 && R.tierName !== 'low') { lastDrop = G.time; slowFor = 0; applyTier(R.tierName === 'high' ? 'med' : 'low'); } } }
-  G.time += raw; U.uTime.value += raw;
+  if (fpsAcc >= 1) { const fps = fpsN / fpsAcc; fpsAcc = 0; fpsN = 0; G.fps = fps; if (SET.quality === 'auto' && G.state === 'play' && G.turbo <= 1) { slowFor = fps < 28 ? slowFor + 1 : 0; if (slowFor >= 5 && G.time - lastDrop > 30 && R.tierName !== 'low') { lastDrop = G.time; slowFor = 0; applyTier(R.tierName === 'high' ? 'med' : 'low'); } } }
   readMove(); if (IN.updateAim) IN.updateAim();
   const S = G.S;
-  if (G.state === 'title' || !S) { titleFrame(raw); return; }
+  if (G.state === 'title' || !S) { G.time += raw; U.uTime.value += raw; titleFrame(raw); return; }
+  // QA turbo (SB.turbo(n)): n logic steps per rendered frame, so slow software rendering still runs in real time
+  const steps = Math.max(1, G.turbo | 0);
+  for (let i = 0; i < steps; i++) simStep(raw);
+  if (G.state === 'win') { winUpdate(Math.min(real, .25) * steps); }   // the win timeline runs on wall-clock time (credits are a CSS roll)
+  else {
+    // camera
+    const h = HERO; let tgt = { x: h.x, y: h.y + 1.2, z: h.z }, o = {};
+    const vx = clamp(h.vx * .35, -2, 2), vz = clamp(h.vz * .35, -2, 2); if (h.st === 'move') { tgt.x += vx; tgt.z += vz; }
+    const C = R.cam;
+    if (G.arena) {
+      const b = G.arena, f = b.focus || b; tgt.x = lerp(h.x, f.x, .35); tgt.z = lerp(h.z, f.z, .35) + (C.abias || 0); o.dist = (b.camDist || 19) + (C.adist || 0); o.noPortrait = true;
+    } else { C.abias = lerp(C.abias || 0, 0, 1 - Math.exp(-2 * raw)); C.adist = lerp(C.adist || 0, 0, 1 - Math.exp(-2 * raw)); }
+    if (G.state === 'dialogue' && Dlg.npc && W.npcs[Dlg.npc]) { const n = W.npcs[Dlg.npc]; tgt = { x: (h.x + n.x) / 2, y: h.y + 1.2, z: (h.z + n.z) / 2 + 2.5 }; o.dist = 10; o.k = 4; o.noPortrait = true; }
+    if (G.cine) {
+      const c = G.cine; const k = Math.min(1, c.t / c.dur); const w = k < .25 ? smooth(k / .25) : k > .8 ? 1 - smooth((k - .8) / .2) : 1;
+      tgt = { x: lerp(h.x, c.x, w), y: lerp(h.y, c.y ?? 0, w) + 1.2, z: lerp(h.z, c.z, w) }; o.dist = lerp(o.dist ?? R.cam.dist, c.dist ?? 34, w); o.k = 3; o.noPortrait = true;
+    }
+    updateCamera(raw, tgt, o);
+    if (G.arena && !G.cine) arenaFraming(raw);
+  }
+  updateSky(S.dayT, raw, HERO);
+  updateRain(raw, R.camera.position.x, HERO.y + 4, HERO.z);
+  updateBlobs();
+  UI.update(raw);
+  R.renderer.render(R.scene, R.camera);
+}
+function simStep(raw) {
+  const S = G.S;
+  G.time += raw; U.uTime.value += raw;
   let dt = raw;
   if (G.hitStop > 0) { G.hitStop -= raw; dt = 0; }
   if (G.slowT > 0) { G.slowT -= raw; dt *= G.slowScale; }
@@ -3582,23 +4398,42 @@ function frame(now) {
     G.tick2 = (G.tick2 || 0) - raw; if (G.tick2 <= 0) { G.tick2 = .5; groupsUpdate(); }
     G.autosaveT += raw; if (G.autosaveT > 60 && G.time - G.lastCombat > 5) { G.autosaveT = 0; saveGame(); }
     if (G.pendingSave && G.time - lastSave > 2) { G.pendingSave = false; saveGame(); }
+    // post-game: the tide turns by itself every 90 s (not mid-fight)
+    if (S.flags.won && !G.arena && !G.cine) { G.natT += dt; if (G.natT >= NATURAL_TIDE) { G.natT = 0; flipTide(true); AU.sfx('swept'); toast('The tide turns on its own', 'item', 1.6); } }
   } else if (G.state === 'dead') { heroUpdate(0); enemiesUpdate(dt * .3); }
   worldUpdate(playing ? dt : 0);
   interactUpdate();
   if (G.state === 'dialogue') Dlg.update(raw);
   if (HERO.wardMesh && HERO.ward) { HERO.wardMesh.position.set(HERO.x, HERO.y + 1, HERO.z); HERO.wardMesh.rotation.y += raw; }
   updateParticles(raw); updateFx(raw); updateDmg(raw);
-  // camera
-  const h = HERO; let tgt = { x: h.x, y: h.y + 1.2, z: h.z }, o = {};
-  const vx = clamp(h.vx * .35, -2, 2), vz = clamp(h.vz * .35, -2, 2); if (h.st === 'move') { tgt.x += vx; tgt.z += vz; }
-  if (G.arena) { tgt.x = lerp(h.x, G.arena.x, .3); tgt.z = lerp(h.z, G.arena.z, .3); o.dist = 19; }
-  if (G.state === 'dialogue' && Dlg.npc && W.npcs[Dlg.npc]) { const n = W.npcs[Dlg.npc]; tgt = { x: (h.x + n.x) / 2, y: h.y + 1.2, z: (h.z + n.z) / 2 + 2.5 }; o.dist = 10; o.k = 4; o.noPortrait = true; }
-  if (G.cine) { G.cine.t += raw; const k = G.cine.t / G.cine.dur; const w = k < .25 ? smooth(k / .25) : k > .8 ? 1 - smooth((k - .8) / .2) : 1; tgt = { x: lerp(h.x, G.cine.x, w), y: lerp(h.y, 0, w) + 1.2, z: lerp(h.z, G.cine.z, w) }; o.dist = lerp(R.cam.dist, 34, w); o.k = 3; if (k >= 1) G.cine = null; }
-  updateCamera(raw, tgt, o);
-  updateSky(S.dayT, raw, h);
-  updateRain(raw, R.camera.position.x, h.y + 4, h.z);
-  UI.update(raw);
-  R.renderer.render(R.scene, R.camera);
+  if (G.cine) { const c = G.cine; c.t += raw; if (c.tick) c.tick(c.t, raw); if (c.t >= c.dur) { G.cine = null; if (c.done) c.done(); } }
+}
+// boss fights: keep the hero and the boss above the touch controls (portrait) and on screen
+const _fp = new THREE.Vector3();
+function arenaFraming(dt) {
+  const b = G.arena, h = HERO, C = R.cam; if (!b) return;
+  const pts = [[h.x, h.y + .2, h.z], [h.x, h.y + 1.8, h.z]];
+  const bs = b.size || 2;
+  if (!b.untargetable && !b.hidden) pts.push([b.x, b.y, b.z + bs * .8], [b.x, b.y + bs * 1.4, b.z], [b.x - bs * .7, b.y, b.z], [b.x + bs * .7, b.y, b.z]);
+  let lo = 1, hi = -1, wx = 0;
+  for (const [x, y, z] of pts) { _fp.set(x, y, z).project(R.camera); lo = Math.min(lo, _fp.y); hi = Math.max(hi, _fp.y); wx = Math.max(wx, Math.abs(_fp.x)); }
+  // the camera is still swinging in (after the intro cine): wait for it instead of chasing it
+  if (_fp.z > 1 || lo < -1.6 || hi > 1.6) return;
+  const touch = document.body.classList.contains('touch');
+  const LO = R.portrait && touch ? -.22 : R.land && touch ? -.55 : -.8, HI = R.portrait ? .72 : R.land ? .62 : .8, k = 1 - Math.exp(-5 * dt), m = 6, step = 6 * dt;
+  C.abias = C.abias || 0; C.adist = C.adist || 0;
+  const needUp = lo < LO, needDown = hi > HI;
+  let d = 0;
+  if (needUp && needDown || wx > .92) C.adist += k * 4;
+  else if (needUp) d = (LO - lo) * m * k;
+  else if (needDown) d = -(hi - HI) * m * k;
+  else {
+    // relax toward neutral framing on whichever side has room
+    if (C.abias > 0 && lo > LO + .12) d = -Math.min(C.abias, k * 2);
+    else if (C.abias < 0 && hi < HI - .12) d = Math.min(-C.abias, k * 2);
+    if (lo > LO + .12 && hi < HI - .12 && wx < .8) C.adist -= k * 1.5;
+  }
+  C.abias = clamp(C.abias + clamp(d, -step, step), -6, 10); C.adist = clamp(C.adist, 0, 9);
 }
 let titleT = 0, titleDay = .3;
 function titleFrame(raw) {
@@ -3626,18 +4461,45 @@ function worldTitleTick(dt) { if (R.beam) R.beam.rotation.y += dt * .5; for (con
 window.SB = {
   setTide(t) { if (G.tideTarget !== +t) flipTide(); G.tideT = .999; },
   tp(x, z) { HERO.x = x; HERO.z = z; HERO.st = 'move'; G.zone = null; },
-  quest(id, step = 0) { const S = G.S; S.quests.main = { id, step }; const order = ['Q0', 'Q1', 'Q2', 'Q3', 'Q4']; S.quests.done = order.slice(0, order.indexOf(id)); if (order.indexOf(id) > 0) { S.flags.talkHesper0 = true; S.flags.moved = S.flags.dodged = S.flags.pealed = true; S.flags.buoys = 3; if (!S.keyItems.includes('saltbell')) S.keyItems.push('saltbell'); } if (order.indexOf(id) > 1 || (id === 'Q1' && step > 2)) { if (!S.keyItems.includes('bellTuned')) S.keyItems.push('bellTuned'); S.flags.nest = true; if (!S.flags.bellposts.includes('BP2')) S.flags.bellposts.push('BP2'); } if (order.indexOf(id) > 1) { S.flags.rung = true; S.flags.talkHesper1 = true; } if (order.indexOf(id) > 2 || (id === 'Q2' && step > 0)) S.hero.ranks.undertow = Math.max(1, S.hero.ranks.undertow); if (order.indexOf(id) > 2) { S.hero.ranks.undertow = Math.max(1, S.hero.ranks.undertow); S.flags.bosses.B1 = true; if (!S.keyItems.includes('lowNote')) S.keyItems.push('lowNote'); S.flags.talkHesper2 = true; } UI.quest(); return S.quests.main; },
+  quest(id, step = 0) {
+    // jump to a quest step, filling in the flags/items that earlier quests would have given
+    const S = G.S, order = ['Q0', 'Q1', 'Q2', 'Q3', 'Q4', 'Q5'], n = order.indexOf(id);
+    S.quests.main = { id, step }; S.quests.done = order.slice(0, n);
+    const key = k => { if (!S.keyItems.includes(k)) S.keyItems.push(k); }, bp = k => { if (!S.flags.bellposts.includes(k)) S.flags.bellposts.push(k); };
+    if (n > 0) { S.flags.talkHesper0 = true; S.flags.moved = S.flags.dodged = S.flags.pealed = true; S.flags.buoys = 3; key('saltbell'); }
+    if (n > 1 || (id === 'Q1' && step > 2)) { key('bellTuned'); S.flags.nest = true; bp('BP2'); }
+    if (n > 1) { S.flags.rung = true; S.flags.talkHesper1 = true; }
+    if (n > 2 || (id === 'Q2' && step > 0)) S.hero.ranks.undertow = Math.max(1, S.hero.ranks.undertow);
+    if (n > 2) { S.flags.bosses.B1 = true; key('lowNote'); S.flags.talkHesper2 = true; S.flags.inArena = true; bp('BP3'); }
+    if (n > 3 || (id === 'Q3' && step > 1)) S.hero.ranks.ward = Math.max(1, S.hero.ranks.ward);
+    if (n > 3) { Object.assign(S.flags.sluice, { A: true, B: true, C: true }); S.flags.gateOpen = S.flags.warden = S.flags.ambush = S.flags.ambushDone = true; key('midNote'); S.flags.talkHesper3 = true; bp('BP4'); }
+    if (n > 4 || (id === 'Q4' && step > 0)) bp('BP5');
+    if (n > 4 || (id === 'Q4' && step > 1)) S.flags.talkCalder = true;
+    if (n > 4 || (id === 'Q4' && step > 2)) S.flags.abbeyDoor = true;
+    if (n > 4 || (id === 'Q4' && step > 3)) { S.flags.gq4Done = true; S.flags.bosses.B2 = true; }
+    if (n > 4) { key('highNote'); S.flags.talkHesper4 = true; }
+    if (id === 'Q5' && step > 0) key('tongue');
+    if (id === 'Q5' && step > 1) bp('BP6');
+    if (id === 'Q5' && step > 2) S.flags.bosses.B3 = true;
+    refreshStats(); UI.quest(); return S.quests.main;
+  },
   give(id) { if (ITEMS[id]) return addItem(id); if (KEY_ITEMS[id] || id === 'bellTuned') { G.S.keyItems.push(id); return id; } if (['glass', 'brass', 'pearl'].includes(id)) { G.S.mats[id] += 100; return G.S.mats; } return null; },
   level(n) { const h = G.S.hero; while (h.lvl < Math.min(n, MAX_LVL)) { h.xp = XP_NEED[h.lvl]; gainXP(0.0001 + 0); h.xp = 0; h.lvl++; h.pts++; } refreshStats(); HERO.hp = ST.maxhp; return h.lvl; },
-  killAll() { let n = 0; for (const e of G.enemies.slice()) if (e.hp > 0 && !e.inert) { if (['emerge', 'statue', 'burrowing'].includes(e.st)) e.st = 'idle'; damageEnemy(e, 0, { flat: 99999 }); n++; } return n; },
+  killAll() { let n = 0; for (const e of G.enemies.slice()) if (e.hp > 0 && !e.inert && !e.untargetable) { if (['emerge', 'statue', 'burrowing'].includes(e.st)) e.st = 'idle'; damageEnemy(e, 0, { flat: 99999 }); n++; } return n; },
   reach() { return reachReport(); },
-  state() { return { state: G.state, tide: G.tideTarget, water: +G.waterY.toFixed(2), hero: { x: +HERO.x.toFixed(1), z: +HERO.z.toFixed(1), hp: Math.round(HERO.hp), st: HERO.st, res: Math.round(HERO.res) }, zone: G.zone && G.zone.id, quest: G.S && G.S.quests.main, enemies: G.enemies.length, fps: G.fps && +G.fps.toFixed(1), tier: R.tierName, calls: R.renderer.info.render.calls, tris: R.renderer.info.render.triangles }; },
+  turbo(n = 1) { G.turbo = clamp(n | 0, 1, 12); return G.turbo; },
+  boss() { const b = G.boss; return b ? { id: b.boss, hp: Math.round(b.hp), max: b.max, st: b.st, phase: b.phase, form: b.form, vuln: !!b.vuln, x: +b.x.toFixed(1), z: +b.z.toFixed(1), arena: G.arena === b, knots: b.knots ? b.knots.filter(k => k.hp > 0).length : undefined } : null; },
+  hurtBoss(n) { const b = G.boss; if (!b) return 0; return damageEnemy(b, 0, { flat: n }); },
+  win() { if (!G.S.flags.bosses.B3) return false; startWinSequence(); return true; },
+  skip() { skipCredits(); },
+  state() { return { won: !!(G.S && G.S.flags.won), hush: +G.hush.toFixed(1), state: G.state, tide: G.tideTarget, water: +G.waterY.toFixed(2), hero: { x: +HERO.x.toFixed(1), z: +HERO.z.toFixed(1), hp: Math.round(HERO.hp), st: HERO.st, res: Math.round(HERO.res) }, zone: G.zone && G.zone.id, quest: G.S && G.S.quests.main, enemies: G.enemies.length, fps: G.fps && +G.fps.toFixed(1), tier: R.tierName, calls: R.renderer.info.render.calls, tris: R.renderer.info.render.triangles }; },
   G, HERO, R, IN, save: () => saveGame(), get S() { return G.S; },
 };
 
 /* ---------- Android wrapper hooks ---------- */
 window.sbBack = function () {
   try {
+    if (G.state === 'win') { skipCredits(); return 'ok'; }
     if (!document.getElementById('sheet').classList.contains('hidden')) { UI.closeSheet(); return 'ok'; }
     if (G.state === 'dialogue') { Dlg.end(); return 'ok'; }
     if (G.state === 'menu') { UI.closeMenu(); return 'ok'; }
@@ -3649,14 +4511,18 @@ window.sbBack = function () {
 };
 window.sbPause = function () {
   try {
-    if (G.S && G.state !== 'title') { saveGame(); if (G.state === 'play') UI.openMenu('map'); }
+    if (G.S && G.state !== 'title') { saveGame(); G.pendingSave = false; if (G.state === 'play') UI.openMenu('map'); }
     if (AU.ctx && AU.ctx.state === 'running') AU.ctx.suspend();
   } catch (e) { }
 };
+// saves are synchronous localStorage writes; flush on hide and on page unload so a quick reload never loses progress
+function flushSave() { try { if (G.S && G.slot && G.state !== 'title') { saveGame(); G.pendingSave = false; } } catch (e) { } }
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) { if (G.S && G.state !== 'title') saveGame(); if (AU.ctx) AU.ctx.suspend(); }
+  if (document.hidden) { flushSave(); if (AU.ctx) AU.ctx.suspend(); }
   else if (AU.ctx && AU.on) AU.ctx.resume().catch(() => { });
 });
+addEventListener('pagehide', flushSave);
+addEventListener('beforeunload', flushSave);
 
 /* ---------- boot ---------- */
 async function boot() {
