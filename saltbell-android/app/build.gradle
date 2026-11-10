@@ -11,7 +11,7 @@ android {
         minSdk 24
         targetSdk 34
         versionCode 1
-        versionName '0.1-playtest'
+        versionName "0.1-playtest"
     }
 
     // Fixed playtest key so each new APK installs over the old one and keeps your saves.
