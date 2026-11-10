@@ -1,0 +1,44 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.bigus.saltbell'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.bigus.saltbell'
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName '0.1-playtest'
+    }
+
+    // Fixed playtest key so each new APK installs over the old one and keeps your saves.
+    // (Not for Google Play: make a private upload key for that.)
+    signingConfigs {
+        playtest {
+            storeFile file('../playtest.keystore')
+            storePassword 'android'
+            keyAlias 'saltbell'
+            keyPassword 'android'
+        }
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.playtest
+        }
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.playtest
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    // The game file is big; keep it uncompressed so the WebView loads it fast.
+    androidResources {
+        noCompress 'html'
+    }
+}
